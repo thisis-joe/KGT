@@ -10,10 +10,9 @@ export function Header() {
   const navigate = useNavigate();
 
   const navItems = [
-    { key: 'company', label: 'Company Profile' },
-    { key: 'products', label: 'Products' },
-    { key: 'quality', label: 'Quality Control' },
-    { key: 'sustainability', label: 'Sustainability' },
+    { key: 'company', label: t('nav.company') },
+    { key: 'products', label: t('nav.business') },
+    { key: 'store', label: t('nav.store') },
   ];
 
   const currentLang = languages.find(l => l.code === currentLanguage);
@@ -91,7 +90,7 @@ export function Header() {
                         currentLanguage === lang.code ? 'bg-gray-50 dark:bg-gray-900' : ''
                       }`}
                     >
-                      {lang.name}
+                      {lang.nativeName}
                     </button>
                   ))}
                 </div>
@@ -103,7 +102,7 @@ export function Header() {
               onClick={() => navigate('/contact')}
               className="bg-[#FFD700] text-black px-6 py-2 text-sm font-bold uppercase tracking-wider hover:bg-[#FFA000] transition-colors rounded-sm"
             >
-              Contact Us
+              {t('nav.contact')}
             </button>
           </div>
 
@@ -151,7 +150,7 @@ export function Header() {
                           : 'border-gray-300 dark:border-gray-700 text-gray-800 dark:text-gray-200 hover:border-[#FFD700]'
                       }`}
                     >
-                      {lang.code.toUpperCase()}
+                      {lang.nativeName}
                     </button>
                   ))}
                 </div>
@@ -164,7 +163,7 @@ export function Header() {
                 }}
                 className="bg-[#FFD700] text-black px-6 py-2 text-sm font-bold uppercase tracking-wider hover:bg-[#FFA000] transition-colors rounded-sm"
               >
-                Contact Us
+                {t('nav.contact')}
               </button>
             </nav>
           </div>

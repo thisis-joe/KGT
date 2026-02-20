@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { createContext, createElement, ReactNode, useContext, useEffect, useMemo, useState } from 'react';
 import koTranslations from '../locales/ko';
 import enTranslations from '../locales/en';
 import zhTranslations from '../locales/zh';
@@ -35,14 +35,70 @@ const translations: Record<Language, any> = {
   vi: viTranslations,
 };
 
-export function useTranslation() {
-  const [currentLanguage, setCurrentLanguage] = useState<Language>(() => {
-    if (typeof window !== 'undefined') {
-      const stored = localStorage.getItem('language') as Language;
-      return stored && languages.some(l => l.code === stored) ? stored : 'ko';
-    }
+function getInitialLanguage(): Language {
+  if (typeof window === 'undefined') {
     return 'ko';
-  });
+  }
+
+  const stored = localStorage.getItem('language') as Language;
+  return stored && languages.some((lang) => lang.code === stored) ? stored : 'ko';
+}
+
+function getTranslationValue(language: Language, key: string): any {
+  const keys = key.split('.');
+  let value: any = translations[language];
+
+  for (const k of keys) {
+    if (value && typeof value === 'object') {
+      value = value[k];
+    } else {
+      return key;
+    }
+  }
+
+  return value !== undefined ? value : key;
+}
+
+interface TranslationContextValue {
+  currentLanguage: Language;
+  setLanguage: (language: Language) => void;
+  t: (key: string) => any;
+}
+
+const TranslationContext = createContext<TranslationContextValue | null>(null);
+
+export function TranslationProvider({ children }: { children: ReactNode }) {
+  const [currentLanguage, setCurrentLanguage] = useState<Language>(getInitialLanguage);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('language', currentLanguage);
+    }
+  }, [currentLanguage]);
+
+  const value = useMemo<TranslationContextValue>(
+    () => ({
+      currentLanguage,
+      setLanguage: setCurrentLanguage,
+      t: (key: string) => getTranslationValue(currentLanguage, key),
+    }),
+    [currentLanguage]
+  );
+
+  return createElement(TranslationContext.Provider, { value }, children);
+}
+
+export function useTranslation() {
+  const context = useContext(TranslationContext);
+
+  if (context) {
+    return {
+      ...context,
+      languages,
+    };
+  }
+
+  const [currentLanguage, setCurrentLanguage] = useState<Language>(getInitialLanguage);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -51,18 +107,7 @@ export function useTranslation() {
   }, [currentLanguage]);
 
   const t = (key: string): any => {
-    const keys = key.split('.');
-    let value: any = translations[currentLanguage];
-    
-    for (const k of keys) {
-      if (value && typeof value === 'object') {
-        value = value[k];
-      } else {
-        return key;
-      }
-    }
-    
-    return value !== undefined ? value : key;
+    return getTranslationValue(currentLanguage, key);
   };
 
   return {

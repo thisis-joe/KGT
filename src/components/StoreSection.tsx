@@ -1,6 +1,9 @@
 import { ShoppingBag } from 'lucide-react';
+import { useTranslation } from '../utils/i18n';
 
 export function StoreSection() {
+  const { t } = useTranslation();
+
   return (
     <section id="store" className="py-16 bg-white dark:bg-[#0f0f0f] border-t border-gray-100 dark:border-gray-800 transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -20,10 +23,10 @@ export function StoreSection() {
                 Consumer Sales
               </span>
               <h2 className="text-3xl md:text-4xl font-['Oswald'] font-bold text-white mb-2">
-                KGT Smart Store
+                {t('store.title')}
               </h2>
               <p className="text-white/90 text-lg">
-                Purchase small quantities and sample kits directly online.
+                {t('store.description')}
               </p>
             </div>
 
@@ -34,7 +37,7 @@ export function StoreSection() {
               rel="noopener noreferrer"
               className="flex items-center justify-center bg-white text-[#2DB400] px-8 py-4 rounded-sm font-bold text-sm uppercase tracking-wide hover:shadow-lg transform hover:-translate-y-1 transition-all duration-200 min-w-[200px] group"
             >
-              Visit Naver Store
+              {t('store.button')}
               <ShoppingBag className="w-5 h-5 ml-2 group-hover:scale-110 transition-transform" />
             </a>
           </div>

@@ -27,16 +27,12 @@ export function Hero() {
 
           {/* Main Heading */}
           <h1 className="font-['Oswald'] font-bold text-white mb-6 leading-tight text-5xl md:text-7xl">
-            ADVANCED SEALING{' '}
-            <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400">
-              SOLUTIONS FOR INDUSTRY
-            </span>
+            {t('hero.title')}
           </h1>
 
           {/* Description */}
           <p className="text-lg md:text-xl text-gray-200 mb-10 max-w-xl font-light leading-relaxed">
-            KGT delivers high-performance functional tapes and adhesive materials engineered for the automotive, electronics, and construction sectors worldwide.
+            {t('hero.subtitle')}
           </p>
 
           {/* CTA Buttons */}
@@ -45,13 +41,13 @@ export function Hero() {
               href="#products"
               className="bg-[#FFD700] text-black px-8 py-4 text-sm font-bold uppercase tracking-widest hover:bg-white hover:text-black transition-all border border-[#FFD700] rounded-sm text-center"
             >
-              View Products
+              {t('hero.cta')}
             </a>
             <a
               href="#company"
               className="bg-transparent border border-white text-white px-8 py-4 text-sm font-bold uppercase tracking-widest hover:bg-white hover:text-black transition-all rounded-sm text-center"
             >
-              Company Profile
+              {t('nav.company')}
             </a>
           </div>
         </div>
