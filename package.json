@@ -1,6 +1,6 @@
 
   {
-      "name": "Corporate Website Proposal",
+      "name": "kgt-ui",
       "version": "0.1.0",
       "private": true,
       "dependencies": {
@@ -59,6 +59,8 @@
       },
       "scripts": {
           "dev": "vite",
-          "build": "vite build"
+          "build": "vite build",
+          "start" : "vite start",
+          "lint" : "vite lint"
       }
   }
