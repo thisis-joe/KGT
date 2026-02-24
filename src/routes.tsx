@@ -1,5 +1,5 @@
 import { createBrowserRouter } from 'react-router-dom';
-import React, { lazy, Suspense } from 'react';
+import { lazy, Suspense } from 'react';
 
 // Lazy load components for code splitting
 const HomePage = lazy(() => import('./pages/HomePage').then(module => ({ default: module.HomePage })));

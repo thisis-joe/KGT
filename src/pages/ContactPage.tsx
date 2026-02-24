@@ -1,11 +1,12 @@
 import { useState, FormEvent } from 'react';
-import { MapPin, Phone, Mail, Globe, Send, Sun, Moon } from 'lucide-react';
-import { useTranslation } from '../utils/i18n';
+import { Send, Sun, Moon } from 'lucide-react';
 import { api } from '../services/api';
 import { useNavigate } from 'react-router';
 
+const DEFAULT_SENDER_EMAIL = 'client.kgt.web@gmail.com';
+const RECEIVER_EMAIL = 'zaxs124124@gmail.com';
+
 export function ContactPage() {
-  const { t } = useTranslation();
   const navigate = useNavigate();
   const [isDark, setIsDark] = useState(false);
   const [formData, setFormData] = useState({
@@ -17,7 +18,20 @@ export function ContactPage() {
     privacy: false,
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'privacy_error' | 'fallback'>('idle');
+  const [fallbackMailto, setFallbackMailto] = useState('');
+
+  const getMailtoUrl = (senderEmail: string) => {
+    const subject = `[${formData.subject}] ${formData.name}`;
+    const lines = [
+      `Name: ${formData.name}`,
+      `Company: ${formData.company || '-'}`,
+      `Email: ${senderEmail}`,
+      '',
+      formData.message,
+    ];
+    return `mailto:${RECEIVER_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(lines.join('\n'))}`;
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const target = e.target;
@@ -30,19 +44,27 @@ export function ContactPage() {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    if (!formData.privacy) {
+      setSubmitStatus('privacy_error');
+      return;
+    }
+
     setIsSubmitting(true);
     setSubmitStatus('idle');
+    setFallbackMailto('');
+    const senderEmail = formData.email.trim() || DEFAULT_SENDER_EMAIL;
 
     try {
       await api.contact.submit({
         name: formData.name,
         company: formData.company,
-        email: formData.email,
+        email: senderEmail,
         phone: '',
         subject: formData.subject,
         message: formData.message,
       });
       setSubmitStatus('success');
+      setFallbackMailto('');
       
       // Reset form after success
       setFormData({
@@ -60,7 +82,12 @@ export function ContactPage() {
       }, 3000);
     } catch (error) {
       console.error('Contact form submission failed:', error);
-      setSubmitStatus('error');
+      const mailtoUrl = getMailtoUrl(senderEmail);
+      setFallbackMailto(mailtoUrl);
+      setSubmitStatus('fallback');
+
+      // Try to open an email client, but still show a visible fallback message if unavailable.
+      window.location.href = mailtoUrl;
     } finally {
       setIsSubmitting(false);
     }
@@ -254,18 +281,20 @@ export function ContactPage() {
                 {/* Email */}
                 <div>
                   <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    Email Address <span className="text-[#FFD700]">*</span>
+                    Email Address
                   </label>
                   <input
                     type="email"
                     id="email"
                     name="email"
-                    required
                     value={formData.email}
                     onChange={handleChange}
-                    placeholder="john@company.com"
+                    placeholder={DEFAULT_SENDER_EMAIL}
                     className="w-full bg-gray-50 dark:bg-black border border-gray-300 dark:border-gray-700 rounded-sm px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#FFD700] focus:border-transparent transition-all dark:text-white"
                   />
+                  <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                    Leave blank to send with the default sender: {DEFAULT_SENDER_EMAIL}
+                  </p>
                 </div>
 
                 {/* Subject */}
@@ -312,6 +341,7 @@ export function ContactPage() {
                       type="checkbox"
                       id="privacy"
                       name="privacy"
+                      required
                       checked={formData.privacy}
                       onChange={handleChange}
                       className="focus:ring-[#FFD700] h-4 w-4 text-[#FFD700] border-gray-300 rounded dark:bg-black dark:border-gray-600"
@@ -343,9 +373,17 @@ export function ContactPage() {
                     Your inquiry has been submitted successfully!
                   </div>
                 )}
-                {submitStatus === 'error' && (
+                {submitStatus === 'privacy_error' && (
                   <div className="p-4 bg-red-50 dark:bg-red-900/20 border-2 border-red-500 text-red-800 dark:text-red-300 rounded-sm">
-                    An error occurred. Please try again.
+                    Please agree to the Privacy Policy before submitting.
+                  </div>
+                )}
+                {submitStatus === 'fallback' && (
+                  <div className="p-4 bg-yellow-50 dark:bg-yellow-900/20 border-2 border-yellow-500 text-yellow-900 dark:text-yellow-200 rounded-sm space-y-2">
+                    <p>Server connection failed. Please send your inquiry by email instead.</p>
+                    <a href={fallbackMailto} className="underline font-semibold break-all">
+                      {RECEIVER_EMAIL}
+                    </a>
                   </div>
                 )}
               </form>

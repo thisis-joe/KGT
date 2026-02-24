@@ -1,9 +1,9 @@
 // Safely access environment variables with a fallback
 const getApiBaseUrl = () => {
   if (typeof import.meta !== 'undefined' && import.meta.env) {
-    return import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api';
+    return import.meta.env.VITE_API_BASE_URL || '/api';
   }
-  return 'http://localhost:8080/api';
+  return '/api';
 };
 
 const API_BASE_URL = getApiBaseUrl();
@@ -30,7 +30,8 @@ export const api = {
         });
 
         if (!response.ok) {
-          throw new Error('Failed to submit contact form');
+          const errorText = await response.text();
+          throw new Error(`Failed to submit contact form (${response.status}): ${errorText || response.statusText}`);
         }
 
         return await response.json();
