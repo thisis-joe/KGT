@@ -1,19 +1,33 @@
+import { useTranslation } from '../utils/i18n';
+
+const SECTION_TITLE_BY_LANGUAGE = {
+  ko: 'KGT를 선택해야 하는 이유',
+  en: 'Why Choose KGT',
+  zh: '选择KGT的理由',
+  ja: 'KGTが選ばれる理由',
+  es: 'Por Qué Elegir KGT',
+  fil: 'Bakit KGT',
+  vi: 'Vì Sao Chọn KGT',
+} as const;
+
 export function CompanyOverview() {
+  const { t, currentLanguage } = useTranslation();
+
   const features = [
     {
       icon: 'science',
-      title: 'Innovation First',
-      description: 'Continuous R&D investment ensuring our adhesive technologies meet the evolving demands of modern industry standards.',
+      title: String(t('coreValues.creativity.title')),
+      description: String(t('coreValues.creativity.description')),
     },
     {
       icon: 'verified',
-      title: 'Quality Assurance',
-      description: 'ISO certified manufacturing processes guaranteeing zero-defect products and consistent performance across batches.',
+      title: String(t('coreValues.innovation.title')),
+      description: String(t('coreValues.innovation.description')),
     },
     {
       icon: 'public',
-      title: 'Global Network',
-      description: 'Strategic logistics and partnerships across 30+ countries ensuring timely delivery and local support.',
+      title: String(t('coreValues.challenge.title')),
+      description: String(t('coreValues.challenge.description')),
     },
   ];
 
@@ -23,7 +37,7 @@ export function CompanyOverview() {
         {/* Section Header */}
         <div className="text-center mb-16">
           <h2 className="text-3xl font-['Oswald'] font-bold mb-4 uppercase tracking-wide text-gray-900 dark:text-white">
-            Why Choose KGT
+            {SECTION_TITLE_BY_LANGUAGE[currentLanguage]}
           </h2>
           <div className="w-16 h-1 bg-[#FFD700] mx-auto"></div>
         </div>
