@@ -123,19 +123,81 @@ export default {
     },
     info: {
       title: "Información de Contacto",
-      headquarters: "Sede / Centro de I+D",
-      hqAddress: "40, Hasinbuk-ro 54beon-gil, Saha-gu, Busan, Corea del Sur (Jangrim-dong) 2F",
-      branch: "Oficina de Ventas de Gyeonggi",
-      branchAddress: "3321, B-dong, IX Tower, Geumgang Penterium, 27, Dongtan-daero, Hwaseong-si, Gyeonggi-do",
-      phone: "Teléfono",
+      headquarters: "Head Office / R&D Center",
+      hqAddress: "2F, 40, Hasinjungang-ro 54beon-gil (Jangnim-dong), Saha-gu, Busan, Republic of Korea",
+      branch: "Gyeonggi Sales Office",
+      branchAddress: "B-3321, Geumgang Penterium IX Tower, 27 Dongtancheomdansaneop 1-ro, Hwaseong-si, Gyeonggi-do, Republic of Korea",
+      phone: "Tel",
       fax: "Fax",
       email: "Correo Electrónico",
       website: "Sitio Web"
     }
   },
+  contactPage: {
+    nav: {
+      companyProfile: "Perfil de la empresa",
+      product: "Producto",
+      qualityControl: "Control de calidad",
+      contactUs: "Contáctanos",
+      quickLinks: "Enlaces rápidos",
+      products: "Productos",
+      sustainability: "Sostenibilidad",
+      legal: "Legal",
+      privacyPolicy: "Política de privacidad",
+      termsOfService: "Términos del servicio",
+      sitemap: "Mapa del sitio"
+    },
+    hero: {
+      title: "Contáctanos",
+      subtitle: "Especialistas globales en cintas funcionales y materiales adhesivos. Respondemos tus consultas con precisión y rapidez."
+    },
+    locations: {
+      title: "Nuestras ubicaciones",
+      headOffice: "Head Office / R&D Center",
+      headOfficeAddressLine1: "2F, 40, Hasinjungang-ro 54beon-gil (Jangnim-dong), Saha-gu",
+      headOfficeAddressLine2: "Busan, Republic of Korea",
+      branchOffice: "Gyeonggi Sales Office",
+      branchOfficeAddressLine1: "B-3321, Geumgang Penterium IX Tower, 27 Dongtancheomdansaneop 1-ro",
+      branchOfficeAddressLine2: "Hwaseong-si, Gyeonggi-do, Republic of Korea",
+      mapButton: "Ver mapa interactivo",
+      mapAlt: "Mapa con las ubicaciones de las oficinas"
+    },
+    form: {
+      title: "Enviar consulta",
+      description: "Completa el siguiente formulario. Los campos marcados con * son obligatorios.",
+      yourName: "Nombre",
+      companyName: "Nombre de la empresa",
+      emailAddress: "Correo electrónico",
+      emailHint: "Déjalo en blanco para usar el remitente predeterminado:",
+      subject: "Asunto",
+      message: "Mensaje",
+      privacyPrefix: "Acepto la",
+      privacyPolicy: "Política de privacidad",
+      privacyDescription: "Tus datos personales se utilizarán para procesar tu consulta.",
+      submit: "Enviar consulta",
+      sending: "Enviando...",
+      success: "¡Tu consulta se ha enviado correctamente!",
+      privacyError: "Debes aceptar la Política de privacidad antes de enviar.",
+      fallback: "Falló la conexión con el servidor. Envía tu consulta por correo electrónico.",
+      mailConfigError: "El servidor de correo aún no está configurado. Contacta al administrador o usa el correo directo de abajo.",
+      subjects: {
+        productInquiry: "Consulta de producto",
+        quotationRequest: "Solicitud de cotización",
+        technicalSupport: "Soporte técnico",
+        partnershipProposal: "Propuesta de alianza",
+        other: "Otro"
+      }
+    },
+    footer: {
+      companyDescription: "Proveedor líder de soluciones adhesivas avanzadas y cintas funcionales para aplicaciones industriales en todo el mundo.",
+      copyright: "© 2023 KGT Corporation. All rights reserved.",
+      linkedin: "LinkedIn",
+      twitter: "X"
+    }
+  },
   footer: {
     company: "KGT",
-    address: "2F, 40, Hasinjoong-ro 54beon-gil, Saha-gu, Busan, República de Corea",
+    address: "2F, 40, Hasinjungang-ro 54beon-gil (Jangnim-dong), Saha-gu, Busan, Republic of Korea",
     copyright: "Copyright © 2024 KGT. Todos los derechos reservados."
   },
   stats: {

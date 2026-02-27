@@ -123,19 +123,81 @@ export default {
     },
     info: {
       title: "联系信息",
-      headquarters: "总部/研发中心",
-      hqAddress: "韩国釜山市沙下区下新中央路54号街40号2楼（长林洞）",
-      branch: "京畿道销售办公室",
-      branchAddress: "京畿道华城市东滩尖端产业1路27号金刚Penterium IX塔B栋3321号",
-      phone: "电话",
-      fax: "传真",
+      headquarters: "Head Office / R&D Center",
+      hqAddress: "2F, 40, Hasinjungang-ro 54beon-gil (Jangnim-dong), Saha-gu, Busan, Republic of Korea",
+      branch: "Gyeonggi Sales Office",
+      branchAddress: "B-3321, Geumgang Penterium IX Tower, 27 Dongtancheomdansaneop 1-ro, Hwaseong-si, Gyeonggi-do, Republic of Korea",
+      phone: "Tel",
+      fax: "Fax",
       email: "电子邮件",
       website: "网站"
     }
   },
+  contactPage: {
+    nav: {
+      companyProfile: "公司简介",
+      product: "产品",
+      qualityControl: "质量管理",
+      contactUs: "联系我们",
+      quickLinks: "快捷链接",
+      products: "产品",
+      sustainability: "可持续发展",
+      legal: "法律信息",
+      privacyPolicy: "隐私政策",
+      termsOfService: "服务条款",
+      sitemap: "网站地图"
+    },
+    hero: {
+      title: "联系我们",
+      subtitle: "我们专注于功能性胶带与粘接材料，能够快速且准确地回应您的咨询。"
+    },
+    locations: {
+      title: "办公地点",
+      headOffice: "Head Office / R&D Center",
+      headOfficeAddressLine1: "2F, 40, Hasinjungang-ro 54beon-gil (Jangnim-dong), Saha-gu",
+      headOfficeAddressLine2: "Busan, Republic of Korea",
+      branchOffice: "Gyeonggi Sales Office",
+      branchOfficeAddressLine1: "B-3321, Geumgang Penterium IX Tower, 27 Dongtancheomdansaneop 1-ro",
+      branchOfficeAddressLine2: "Hwaseong-si, Gyeonggi-do, Republic of Korea",
+      mapButton: "查看互动地图",
+      mapAlt: "显示办公地点的地图"
+    },
+    form: {
+      title: "发送咨询",
+      description: "请填写下列表单。带 * 为必填项。",
+      yourName: "姓名",
+      companyName: "公司名称",
+      emailAddress: "电子邮箱",
+      emailHint: "留空将使用默认发件邮箱：",
+      subject: "主题",
+      message: "留言内容",
+      privacyPrefix: "我同意",
+      privacyPolicy: "隐私政策",
+      privacyDescription: "您的个人信息将仅用于处理咨询。",
+      submit: "提交咨询",
+      sending: "发送中...",
+      success: "您的咨询已成功提交！",
+      privacyError: "提交前请同意隐私政策。",
+      fallback: "服务器连接失败。请改用电子邮件发送咨询。",
+      mailConfigError: "邮件服务器尚未配置。请联系管理员，或使用下方邮箱直接发送。",
+      subjects: {
+        productInquiry: "产品咨询",
+        quotationRequest: "报价请求",
+        technicalSupport: "技术支持",
+        partnershipProposal: "合作提案",
+        other: "其他"
+      }
+    },
+    footer: {
+      companyDescription: "KGT 为全球工业客户提供先进的粘接解决方案与功能性胶带产品。",
+      copyright: "© 2023 KGT Corporation. All rights reserved.",
+      linkedin: "领英",
+      twitter: "推特"
+    }
+  },
   footer: {
     company: "KGT",
-    address: "韩国釜山市沙下区河新中央路54号街40号2楼（长林洞）",
+    address: "2F, 40, Hasinjungang-ro 54beon-gil (Jangnim-dong), Saha-gu, Busan, Republic of Korea",
     copyright: "Copyright © 2024 KGT. All rights reserved."
   },
   stats: {

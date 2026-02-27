@@ -123,19 +123,81 @@ export default {
     },
     info: {
       title: "Contact Information",
-      headquarters: "Headquarters / R&D Center",
-      hqAddress: "40, Hasinbuk-ro 54beon-gil, Saha-gu, Busan, South Korea (Jangrim-dong) 2F",
+      headquarters: "Head Office / R&D Center",
+      hqAddress: "2F, 40, Hasinjungang-ro 54beon-gil (Jangnim-dong), Saha-gu, Busan, Republic of Korea",
       branch: "Gyeonggi Sales Office",
-      branchAddress: "3321, B-dong, IX Tower, Geumgang Penterium, 27, Dongtan-daero, Hwaseong-si, Gyeonggi-do",
-      phone: "Phone",
+      branchAddress: "B-3321, Geumgang Penterium IX Tower, 27 Dongtancheomdansaneop 1-ro, Hwaseong-si, Gyeonggi-do, Republic of Korea",
+      phone: "Tel",
       fax: "Fax",
       email: "Email",
       website: "Website"
     }
   },
+  contactPage: {
+    nav: {
+      companyProfile: "Company Profile",
+      product: "Product",
+      qualityControl: "Quality Control",
+      contactUs: "Contact Us",
+      quickLinks: "Quick Links",
+      products: "Products",
+      sustainability: "Sustainability",
+      legal: "Legal",
+      privacyPolicy: "Privacy Policy",
+      termsOfService: "Terms of Service",
+      sitemap: "Sitemap"
+    },
+    hero: {
+      title: "Contact Us",
+      subtitle: "As a global specialist in functional tapes and adhesive materials, KGT provides prompt and reliable responses to all inquiries."
+    },
+    locations: {
+      title: "Our Locations",
+      headOffice: "Head Office / R&D Center",
+      headOfficeAddressLine1: "2F, 40, Hasinjungang-ro 54beon-gil (Jangnim-dong), Saha-gu",
+      headOfficeAddressLine2: "Busan, Republic of Korea",
+      branchOffice: "Gyeonggi Sales Office",
+      branchOfficeAddressLine1: "B-3321, Geumgang Penterium IX Tower, 27 Dongtancheomdansaneop 1-ro",
+      branchOfficeAddressLine2: "Hwaseong-si, Gyeonggi-do, Republic of Korea",
+      mapButton: "View Interactive Map",
+      mapAlt: "Map showing office locations"
+    },
+    form: {
+      title: "Send an Inquiry",
+      description: "Please complete the form below. Fields marked with * are required.",
+      yourName: "Your Name",
+      companyName: "Company Name",
+      emailAddress: "Email Address",
+      emailHint: "Leave blank to send with the default sender:",
+      subject: "Subject",
+      message: "Message",
+      privacyPrefix: "I agree to the",
+      privacyPolicy: "Privacy Policy",
+      privacyDescription: "Your personal information will be used solely for handling your inquiry.",
+      submit: "Submit Inquiry",
+      sending: "Sending...",
+      success: "Your inquiry has been submitted successfully!",
+      privacyError: "Please agree to the Privacy Policy before submitting.",
+      fallback: "We could not connect to the server. Please send your inquiry directly by email.",
+      mailConfigError: "The mail server is not configured. Please contact the administrator or use the direct email below.",
+      subjects: {
+        productInquiry: "Product Inquiry",
+        quotationRequest: "Quotation Request",
+        technicalSupport: "Technical Support",
+        partnershipProposal: "Partnership Proposal",
+        other: "Other"
+      }
+    },
+    footer: {
+      companyDescription: "KGT is a trusted provider of advanced adhesive solutions and functional tapes for industrial applications worldwide.",
+      copyright: "© 2023 KGT Corporation. All rights reserved.",
+      linkedin: "LinkedIn",
+      twitter: "X"
+    }
+  },
   footer: {
     company: "KGT",
-    address: "2F, 40, Hasinjoong-ro 54beon-gil, Saha-gu, Busan, Republic of Korea",
+    address: "2F, 40, Hasinjungang-ro 54beon-gil (Jangnim-dong), Saha-gu, Busan, Republic of Korea",
     copyright: "Copyright © 2024 KGT. All rights reserved."
   },
   stats: {

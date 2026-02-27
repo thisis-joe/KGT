@@ -26,7 +26,7 @@ export function Hero() {
           </div>
 
           {/* Main Heading */}
-          <h1 className="font-['Oswald'] font-bold text-white mb-6 leading-tight text-5xl md:text-7xl">
+          <h1 className="font-['Oswald'] font-bold text-white mb-6 leading-[1.15] text-5xl md:text-7xl break-keep max-w-4xl">
             {t('hero.title')}
           </h1>
 

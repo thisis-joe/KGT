@@ -123,19 +123,81 @@ export default {
     },
     info: {
       title: "Impormasyon sa Pakikipag-ugnayan",
-      headquarters: "Punong Tanggapan / R&D Center",
-      hqAddress: "40, Hasinbuk-ro 54beon-gil, Saha-gu, Busan, South Korea (Jangrim-dong) 2F",
+      headquarters: "Head Office / R&D Center",
+      hqAddress: "2F, 40, Hasinjungang-ro 54beon-gil (Jangnim-dong), Saha-gu, Busan, Republic of Korea",
       branch: "Gyeonggi Sales Office",
-      branchAddress: "3321, B-dong, IX Tower, Geumgang Penterium, 27, Dongtan-daero, Hwaseong-si, Gyeonggi-do",
-      phone: "Telepono",
+      branchAddress: "B-3321, Geumgang Penterium IX Tower, 27 Dongtancheomdansaneop 1-ro, Hwaseong-si, Gyeonggi-do, Republic of Korea",
+      phone: "Tel",
       fax: "Fax",
       email: "Email",
       website: "Website"
     }
   },
+  contactPage: {
+    nav: {
+      companyProfile: "Profile ng Kumpanya",
+      product: "Produkto",
+      qualityControl: "Kontrol sa Kalidad",
+      contactUs: "Makipag-ugnayan",
+      quickLinks: "Mabilis na Link",
+      products: "Mga Produkto",
+      sustainability: "Pagpapanatili",
+      legal: "Legal",
+      privacyPolicy: "Patakaran sa Privacy",
+      termsOfService: "Mga Tuntunin ng Serbisyo",
+      sitemap: "Sitemap"
+    },
+    hero: {
+      title: "Makipag-ugnayan",
+      subtitle: "Mga global na eksperto sa functional tape at adhesive materials. Handa kaming tumugon sa inyong mga tanong nang mabilis at tumpak."
+    },
+    locations: {
+      title: "Aming Mga Lokasyon",
+      headOffice: "Head Office / R&D Center",
+      headOfficeAddressLine1: "2F, 40, Hasinjungang-ro 54beon-gil (Jangnim-dong), Saha-gu",
+      headOfficeAddressLine2: "Busan, Republic of Korea",
+      branchOffice: "Gyeonggi Sales Office",
+      branchOfficeAddressLine1: "B-3321, Geumgang Penterium IX Tower, 27 Dongtancheomdansaneop 1-ro",
+      branchOfficeAddressLine2: "Hwaseong-si, Gyeonggi-do, Republic of Korea",
+      mapButton: "Tingnan ang Interactive Map",
+      mapAlt: "Mapa ng mga lokasyon ng opisina"
+    },
+    form: {
+      title: "Magpadala ng Inquiry",
+      description: "Pakisagutan ang form sa ibaba. Ang may * ay kinakailangang punan.",
+      yourName: "Pangalan",
+      companyName: "Pangalan ng Kumpanya",
+      emailAddress: "Email Address",
+      emailHint: "Iwanang blangko para gamitin ang default sender:",
+      subject: "Paksa",
+      message: "Mensahe",
+      privacyPrefix: "Sumasang-ayon ako sa",
+      privacyPolicy: "Patakaran sa Privacy",
+      privacyDescription: "Gagamitin ang iyong personal na datos para maproseso ang iyong inquiry.",
+      submit: "Isumite ang Inquiry",
+      sending: "Ipinapadala...",
+      success: "Matagumpay na naipadala ang iyong inquiry!",
+      privacyError: "Mangyaring sumang-ayon muna sa Patakaran sa Privacy bago magsumite.",
+      fallback: "Nabigo ang koneksyon sa server. Mangyaring ipadala ang iyong inquiry sa email.",
+      mailConfigError: "Hindi pa naka-configure ang mail server. Makipag-ugnayan sa administrator o gamitin ang email sa ibaba.",
+      subjects: {
+        productInquiry: "Inquiry sa Produkto",
+        quotationRequest: "Hiling sa Quotation",
+        technicalSupport: "Teknikal na Suporta",
+        partnershipProposal: "Panukala sa Pakikipagtulungan",
+        other: "Iba pa"
+      }
+    },
+    footer: {
+      companyDescription: "Nangungunang provider ng advanced adhesive solutions at functional tapes para sa mga industriyal na aplikasyon sa buong mundo.",
+      copyright: "© 2023 KGT Corporation. All rights reserved.",
+      linkedin: "LinkedIn",
+      twitter: "X"
+    }
+  },
   footer: {
     company: "KGT",
-    address: "2F, 40, Hasinjoong-ro 54beon-gil, Saha-gu, Busan, Republika ng Korea",
+    address: "2F, 40, Hasinjungang-ro 54beon-gil (Jangnim-dong), Saha-gu, Busan, Republic of Korea",
     copyright: "Copyright © 2024 KGT. Lahat ng karapatan ay nakalaan."
   },
   stats: {

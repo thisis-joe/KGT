@@ -1,51 +1,162 @@
+import type { IncomingMessage, ServerResponse } from 'node:http';
+import path from 'path';
+import nodemailer from 'nodemailer';
+import react from '@vitejs/plugin-react-swc';
+import { defineConfig, loadEnv } from 'vite';
+import type { Connect, Plugin } from 'vite';
 
-  import { defineConfig } from 'vite';
-  import react from '@vitejs/plugin-react-swc';
-  import path from 'path';
+interface ContactRequestBody {
+  name: string;
+  company?: string;
+  email: string;
+  senderEmail?: string;
+  phone?: string;
+  subject: string;
+  message: string;
+}
 
-  export default defineConfig({
-    plugins: [react()],
+interface MailConfig {
+  gmailUser: string;
+  gmailAppPassword: string;
+  receiverEmail: string[];
+}
+
+const sendJson = (res: ServerResponse, statusCode: number, body: Record<string, unknown>) => {
+  res.statusCode = statusCode;
+  res.setHeader('Content-Type', 'application/json; charset=utf-8');
+  res.end(JSON.stringify(body));
+};
+
+const parseJsonBody = (req: IncomingMessage): Promise<unknown> =>
+  new Promise((resolve, reject) => {
+    const chunks: Buffer[] = [];
+    req.on('data', (chunk) => chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk)));
+    req.on('end', () => {
+      if (!chunks.length) {
+        resolve({});
+        return;
+      }
+
+      try {
+        resolve(JSON.parse(Buffer.concat(chunks).toString('utf-8')));
+      } catch (error) {
+        reject(error);
+      }
+    });
+    req.on('error', reject);
+  });
+
+const isValidContactBody = (payload: unknown): payload is ContactRequestBody => {
+  if (!payload || typeof payload !== 'object') return false;
+
+  const data = payload as Record<string, unknown>;
+  return (
+    typeof data.name === 'string' &&
+    data.name.trim().length > 0 &&
+    typeof data.email === 'string' &&
+    data.email.trim().length > 0 &&
+    typeof data.subject === 'string' &&
+    data.subject.trim().length > 0 &&
+    typeof data.message === 'string' &&
+    data.message.trim().length > 0
+  );
+};
+
+const createContactApiPlugin = (mailConfig: MailConfig): Plugin => {
+  const contactApiMiddleware: Connect.NextHandleFunction = async (req, res, next) => {
+    if (!req.url?.startsWith('/api/contact')) {
+      next();
+      return;
+    }
+
+    if (req.method !== 'POST') {
+      sendJson(res, 405, { message: 'Method Not Allowed' });
+      return;
+    }
+
+    const { gmailUser, gmailAppPassword, receiverEmail } = mailConfig;
+    if (!gmailUser || !gmailAppPassword || gmailAppPassword === 'PASTE_GMAIL_APP_PASSWORD_HERE') {
+      sendJson(res, 500, {
+        message: 'Mail server is not configured. Set MAIL_GMAIL_USER / MAIL_GMAIL_APP_PASSWORD / MAIL_RECEIVER_EMAILS in .env.',
+      });
+      return;
+    }
+
+    try {
+      const payload = await parseJsonBody(req);
+      if (!isValidContactBody(payload)) {
+        sendJson(res, 400, { message: 'Invalid request body.' });
+        return;
+      }
+
+      const sanitized = {
+        name: payload.name.trim(),
+        company: typeof payload.company === 'string' ? payload.company.trim() : '',
+        email: payload.email.trim(),
+        senderEmail: typeof payload.senderEmail === 'string' ? payload.senderEmail.trim() : '',
+        phone: typeof payload.phone === 'string' ? payload.phone.trim() : '',
+        subject: payload.subject.trim(),
+        message: payload.message.trim(),
+      };
+
+      const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+          user: gmailUser,
+          pass: gmailAppPassword,
+        },
+      });
+
+      await transporter.sendMail({
+        from: `"KGT Contact" <${gmailUser}>`,
+        to: receiverEmail,
+        replyTo: sanitized.email,
+        subject: `[KGT Contact] ${sanitized.subject}`,
+        text: [
+          `Name: ${sanitized.name}`,
+          `Company: ${sanitized.company || '-'}`,
+          `Reply Email: ${sanitized.email}`,
+          `Sender Email: ${sanitized.senderEmail || gmailUser}`,
+          `Phone: ${sanitized.phone || '-'}`,
+          '',
+          sanitized.message,
+        ].join('\n'),
+      });
+
+      sendJson(res, 200, { ok: true });
+    } catch (error) {
+      console.error('Contact API error:', error);
+      sendJson(res, 500, { message: 'Failed to send email.' });
+    }
+  };
+
+  return {
+    name: 'kgt-contact-api',
+    configureServer(server) {
+      server.middlewares.use(contactApiMiddleware);
+    },
+    configurePreviewServer(server) {
+      server.middlewares.use(contactApiMiddleware);
+    },
+  };
+};
+
+export default defineConfig(({ mode }) => {
+  const env = loadEnv(mode, process.cwd(), '');
+  const mailConfig: MailConfig = {
+    gmailUser: env.MAIL_GMAIL_USER || '',
+    gmailAppPassword: env.MAIL_GMAIL_APP_PASSWORD || '',
+    receiverEmail: (env.MAIL_RECEIVER_EMAILS || '')
+      .split(',')
+      .map((email) => email.trim())
+      .filter(Boolean),
+  };
+
+  return {
+    plugins: [react(), createContactApiPlugin(mailConfig)],
     resolve: {
       extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
       alias: {
-        'vaul@1.1.2': 'vaul',
-        'sonner@2.0.3': 'sonner',
-        'recharts@2.15.2': 'recharts',
-        'react-resizable-panels@2.1.7': 'react-resizable-panels',
-        'react-hook-form@7.55.0': 'react-hook-form',
-        'react-day-picker@8.10.1': 'react-day-picker',
-        'next-themes@0.4.6': 'next-themes',
-        'lucide-react@0.487.0': 'lucide-react',
-        'input-otp@1.4.2': 'input-otp',
-        'embla-carousel-react@8.6.0': 'embla-carousel-react',
-        'cmdk@1.1.1': 'cmdk',
-        'class-variance-authority@0.7.1': 'class-variance-authority',
-        '@radix-ui/react-tooltip@1.1.8': '@radix-ui/react-tooltip',
-        '@radix-ui/react-toggle@1.1.2': '@radix-ui/react-toggle',
-        '@radix-ui/react-toggle-group@1.1.2': '@radix-ui/react-toggle-group',
-        '@radix-ui/react-tabs@1.1.3': '@radix-ui/react-tabs',
-        '@radix-ui/react-switch@1.1.3': '@radix-ui/react-switch',
-        '@radix-ui/react-slot@1.1.2': '@radix-ui/react-slot',
-        '@radix-ui/react-slider@1.2.3': '@radix-ui/react-slider',
-        '@radix-ui/react-separator@1.1.2': '@radix-ui/react-separator',
-        '@radix-ui/react-select@2.1.6': '@radix-ui/react-select',
-        '@radix-ui/react-scroll-area@1.2.3': '@radix-ui/react-scroll-area',
-        '@radix-ui/react-radio-group@1.2.3': '@radix-ui/react-radio-group',
-        '@radix-ui/react-progress@1.1.2': '@radix-ui/react-progress',
-        '@radix-ui/react-popover@1.1.6': '@radix-ui/react-popover',
-        '@radix-ui/react-navigation-menu@1.2.5': '@radix-ui/react-navigation-menu',
-        '@radix-ui/react-menubar@1.1.6': '@radix-ui/react-menubar',
-        '@radix-ui/react-label@2.1.2': '@radix-ui/react-label',
-        '@radix-ui/react-hover-card@1.1.6': '@radix-ui/react-hover-card',
-        '@radix-ui/react-dropdown-menu@2.1.6': '@radix-ui/react-dropdown-menu',
-        '@radix-ui/react-dialog@1.1.6': '@radix-ui/react-dialog',
-        '@radix-ui/react-context-menu@2.2.6': '@radix-ui/react-context-menu',
-        '@radix-ui/react-collapsible@1.1.3': '@radix-ui/react-collapsible',
-        '@radix-ui/react-checkbox@1.1.4': '@radix-ui/react-checkbox',
-        '@radix-ui/react-avatar@1.1.3': '@radix-ui/react-avatar',
-        '@radix-ui/react-aspect-ratio@1.1.2': '@radix-ui/react-aspect-ratio',
-        '@radix-ui/react-alert-dialog@1.1.6': '@radix-ui/react-alert-dialog',
-        '@radix-ui/react-accordion@1.2.3': '@radix-ui/react-accordion',
         '@': path.resolve(__dirname, './src'),
       },
     },
@@ -57,4 +168,5 @@
       port: 3000,
       open: true,
     },
-  });
+  };
+});

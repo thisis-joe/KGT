@@ -12,10 +12,33 @@ interface ContactFormData {
   name: string;
   company?: string;
   email: string;
+  senderEmail?: string;
   phone?: string;
   subject: string;
   message: string;
 }
+
+const getErrorMessage = async (response: Response) => {
+  try {
+    const data = await response.json();
+    if (data && typeof data.message === 'string' && data.message.trim().length > 0) {
+      return data.message;
+    }
+  } catch {
+    // no-op
+  }
+
+  try {
+    const errorText = await response.text();
+    if (errorText.trim().length > 0) {
+      return errorText;
+    }
+  } catch {
+    // no-op
+  }
+
+  return response.statusText;
+};
 
 export const api = {
   contact: {
@@ -30,8 +53,8 @@ export const api = {
         });
 
         if (!response.ok) {
-          const errorText = await response.text();
-          throw new Error(`Failed to submit contact form (${response.status}): ${errorText || response.statusText}`);
+          const errorMessage = await getErrorMessage(response);
+          throw new Error(`Failed to submit contact form (${response.status}): ${errorMessage}`);
         }
 
         return await response.json();

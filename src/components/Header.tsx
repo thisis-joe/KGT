@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Menu, ChevronDown } from 'lucide-react';
 import { useTranslation } from '../utils/i18n';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 
 export function Header() {
   const { t, currentLanguage, setLanguage, languages } = useTranslation();
@@ -31,7 +31,7 @@ export function Header() {
   return (
     <header className="fixed w-full top-0 z-50 bg-white/95 dark:bg-[#0f0f0f]/95 border-b border-gray-200 dark:border-gray-800 backdrop-blur-sm transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-20">
+        <div className="flex items-center h-20">
           {/* Logo */}
           <button
             onClick={() => navigate('/')}
@@ -48,7 +48,7 @@ export function Header() {
           </button>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex space-x-8">
+          <nav className="hidden lg:flex flex-1 justify-center gap-14 px-10">
             {navItems.map((item) => (
               <a
                 key={item.key}
@@ -61,7 +61,7 @@ export function Header() {
           </nav>
 
           {/* Right Section */}
-          <div className="hidden lg:flex items-center space-x-6">
+          <div className="hidden lg:flex items-center space-x-6 ml-auto">
             {/* Language Selector */}
             <div className="relative">
               <button

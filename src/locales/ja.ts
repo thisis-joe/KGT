@@ -123,19 +123,81 @@ export default {
     },
     info: {
       title: "連絡先情報",
-      headquarters: "本社/技術研究所",
-      hqAddress: "釜山広域市沙下区下新中央路54番ギル40 2階（長林洞）",
-      branch: "京畿営業支社",
-      branchAddress: "京畿道華城市東灘尖端産業1路27 錦江ペンテリウムIXタワーB棟3321号",
-      phone: "電話",
-      fax: "ファックス",
+      headquarters: "Head Office / R&D Center",
+      hqAddress: "2F, 40, Hasinjungang-ro 54beon-gil (Jangnim-dong), Saha-gu, Busan, Republic of Korea",
+      branch: "Gyeonggi Sales Office",
+      branchAddress: "B-3321, Geumgang Penterium IX Tower, 27 Dongtancheomdansaneop 1-ro, Hwaseong-si, Gyeonggi-do, Republic of Korea",
+      phone: "Tel",
+      fax: "Fax",
       email: "メール",
       website: "ウェブサイト"
     }
   },
+  contactPage: {
+    nav: {
+      companyProfile: "会社紹介",
+      product: "製品",
+      qualityControl: "品質管理",
+      contactUs: "お問い合わせ",
+      quickLinks: "クイックリンク",
+      products: "製品",
+      sustainability: "サステナビリティ",
+      legal: "法的情報",
+      privacyPolicy: "プライバシーポリシー",
+      termsOfService: "利用規約",
+      sitemap: "サイトマップ"
+    },
+    hero: {
+      title: "お問い合わせ",
+      subtitle: "機能性テープと粘着材料のグローバル専門企業として、迅速かつ正確にご案内します。"
+    },
+    locations: {
+      title: "拠点案内",
+      headOffice: "Head Office / R&D Center",
+      headOfficeAddressLine1: "2F, 40, Hasinjungang-ro 54beon-gil (Jangnim-dong), Saha-gu",
+      headOfficeAddressLine2: "Busan, Republic of Korea",
+      branchOffice: "Gyeonggi Sales Office",
+      branchOfficeAddressLine1: "B-3321, Geumgang Penterium IX Tower, 27 Dongtancheomdansaneop 1-ro",
+      branchOfficeAddressLine2: "Hwaseong-si, Gyeonggi-do, Republic of Korea",
+      mapButton: "インタラクティブ地図を見る",
+      mapAlt: "拠点位置を示す地図"
+    },
+    form: {
+      title: "お問い合わせ送信",
+      description: "以下のフォームにご入力ください。* は必須項目です。",
+      yourName: "お名前",
+      companyName: "会社名",
+      emailAddress: "メールアドレス",
+      emailHint: "空欄の場合は既定の送信元で送信されます：",
+      subject: "件名",
+      message: "お問い合わせ内容",
+      privacyPrefix: "私は",
+      privacyPolicy: "プライバシーポリシー",
+      privacyDescription: "に同意し、問い合わせ対応のため個人情報を提供します。",
+      submit: "問い合わせを送信",
+      sending: "送信中...",
+      success: "お問い合わせが正常に送信されました。",
+      privacyError: "送信前にプライバシーポリシーへの同意が必要です。",
+      fallback: "サーバー接続に失敗しました。メールで直接お問い合わせください。",
+      mailConfigError: "メールサーバーが未設定です。管理者へ連絡するか、下記メールアドレスをご利用ください。",
+      subjects: {
+        productInquiry: "製品に関するお問い合わせ",
+        quotationRequest: "見積依頼",
+        technicalSupport: "技術サポート",
+        partnershipProposal: "協業提案",
+        other: "その他"
+      }
+    },
+    footer: {
+      companyDescription: "KGTは産業用途向けの先進的な粘着ソリューションと機能性テープを提供しています。",
+      copyright: "© 2023 KGT Corporation. All rights reserved.",
+      linkedin: "LinkedIn",
+      twitter: "X"
+    }
+  },
   footer: {
     company: "KGT",
-    address: "韓国釜山市沙下区河新中央路54番街40番地2階（長林洞）",
+    address: "2F, 40, Hasinjungang-ro 54beon-gil (Jangnim-dong), Saha-gu, Busan, Republic of Korea",
     copyright: "Copyright © 2024 KGT. All rights reserved."
   },
   stats: {

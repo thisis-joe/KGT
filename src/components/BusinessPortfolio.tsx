@@ -36,10 +36,11 @@ export function BusinessPortfolio() {
             </p>
           </div>
           <a
-            href="#catalog"
+            href="/catalog/KGT_Catalog_Placeholder.txt"
+            download
             className="hidden md:flex items-center text-sm font-bold uppercase tracking-wide border-b-2 border-[#FFD700] pb-1 text-gray-900 dark:text-white hover:text-[#FFD700] transition-colors mt-4 md:mt-0"
           >
-            View Full Catalog
+            Download Catalog
             <ArrowRight className="w-4 h-4 ml-1" />
           </a>
         </div>

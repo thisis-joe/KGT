@@ -108,7 +108,7 @@ export default {
       name: "Tên",
       company: "Công ty",
       email: "Email",
-      phone: "Điện thoại",
+      phone: "Số điện thoại",
       subject: "Chủ đề",
       message: "Tin nhắn",
       submit: "Gửi",
@@ -123,19 +123,81 @@ export default {
     },
     info: {
       title: "Thông tin Liên hệ",
-      headquarters: "Trụ sở chính / Trung tâm R&D",
-      hqAddress: "40, Hasinbuk-ro 54beon-gil, Saha-gu, Busan, Hàn Quốc (Jangrim-dong) Tầng 2",
-      branch: "Văn phòng Bán hàng Gyeonggi",
-      branchAddress: "3321, B-dong, IX Tower, Geumgang Penterium, 27, Dongtan-daero, Hwaseong-si, Gyeonggi-do",
-      phone: "Điện thoại",
+      headquarters: "Head Office / R&D Center",
+      hqAddress: "2F, 40, Hasinjungang-ro 54beon-gil (Jangnim-dong), Saha-gu, Busan, Republic of Korea",
+      branch: "Gyeonggi Sales Office",
+      branchAddress: "B-3321, Geumgang Penterium IX Tower, 27 Dongtancheomdansaneop 1-ro, Hwaseong-si, Gyeonggi-do, Republic of Korea",
+      phone: "Tel",
       fax: "Fax",
       email: "Email",
       website: "Trang web"
     }
   },
+  contactPage: {
+    nav: {
+      companyProfile: "Hồ sơ công ty",
+      product: "Sản phẩm",
+      qualityControl: "Kiểm soát chất lượng",
+      contactUs: "Liên hệ",
+      quickLinks: "Liên kết nhanh",
+      products: "Sản phẩm",
+      sustainability: "Phát triển bền vững",
+      legal: "Pháp lý",
+      privacyPolicy: "Chính sách bảo mật",
+      termsOfService: "Điều khoản dịch vụ",
+      sitemap: "Sơ đồ trang web"
+    },
+    hero: {
+      title: "Liên hệ",
+      subtitle: "Chuyên gia toàn cầu về băng keo chức năng và vật liệu kết dính. Chúng tôi sẵn sàng phản hồi nhanh chóng và chính xác."
+    },
+    locations: {
+      title: "Địa điểm của chúng tôi",
+      headOffice: "Head Office / R&D Center",
+      headOfficeAddressLine1: "2F, 40, Hasinjungang-ro 54beon-gil (Jangnim-dong), Saha-gu",
+      headOfficeAddressLine2: "Busan, Republic of Korea",
+      branchOffice: "Gyeonggi Sales Office",
+      branchOfficeAddressLine1: "B-3321, Geumgang Penterium IX Tower, 27 Dongtancheomdansaneop 1-ro",
+      branchOfficeAddressLine2: "Hwaseong-si, Gyeonggi-do, Republic of Korea",
+      mapButton: "Xem bản đồ tương tác",
+      mapAlt: "Bản đồ hiển thị vị trí văn phòng"
+    },
+    form: {
+      title: "Gửi yêu cầu",
+      description: "Vui lòng điền vào biểu mẫu bên dưới. Các trường có * là bắt buộc.",
+      yourName: "Họ và tên",
+      companyName: "Tên công ty",
+      emailAddress: "Địa chỉ email",
+      emailHint: "Để trống để gửi bằng địa chỉ người gửi mặc định:",
+      subject: "Chủ đề",
+      message: "Nội dung",
+      privacyPrefix: "Tôi đồng ý với",
+      privacyPolicy: "Chính sách bảo mật",
+      privacyDescription: "và cho phép sử dụng dữ liệu cá nhân để xử lý yêu cầu của tôi.",
+      submit: "Gửi yêu cầu",
+      sending: "Đang gửi...",
+      success: "Yêu cầu của bạn đã được gửi thành công!",
+      privacyError: "Vui lòng đồng ý Chính sách bảo mật trước khi gửi.",
+      fallback: "Kết nối máy chủ thất bại. Vui lòng gửi yêu cầu qua email.",
+      mailConfigError: "Máy chủ email chưa được cấu hình. Vui lòng liên hệ quản trị viên hoặc dùng email bên dưới.",
+      subjects: {
+        productInquiry: "Yêu cầu về sản phẩm",
+        quotationRequest: "Yêu cầu báo giá",
+        technicalSupport: "Hỗ trợ kỹ thuật",
+        partnershipProposal: "Đề xuất hợp tác",
+        other: "Khác"
+      }
+    },
+    footer: {
+      companyDescription: "Nhà cung cấp hàng đầu về giải pháp keo dán tiên tiến và băng keo chức năng cho ứng dụng công nghiệp toàn cầu.",
+      copyright: "© 2023 KGT Corporation. All rights reserved.",
+      linkedin: "LinkedIn",
+      twitter: "X"
+    }
+  },
   footer: {
     company: "KGT",
-    address: "Tầng 2, 40, Hasinjoong-ro 54beon-gil, Saha-gu, Busan, Hàn Quốc",
+    address: "2F, 40, Hasinjungang-ro 54beon-gil (Jangnim-dong), Saha-gu, Busan, Republic of Korea",
     copyright: "Bản quyền © 2024 KGT. Đã đăng ký bản quyền."
   },
   stats: {

@@ -9,7 +9,25 @@
 
     <body>
       <div id="root"></div>
-      <script type="module" src="/src/main.tsx"></script>
+      <script type="module" src="/src/main.tsx"></script> 
     </body>
   </html>
   
+
+  <!-- 
+  
+1. 브라우저는 먼저 index.html만 읽음
+
+2. <div id="root"></div>  
+  -  root id인 div 이거 한개에다가 이제 동적으로 dom 트리 만들거임
+
+3. <script type="module" src="/src/main.tsx"></script>
+    - type="module" 이어야 하는 이유
+        - 타입스크립트(main.tsx)는  ESM import/export이기 때문에.   (ESM = ECMAScript Modules = JavaScript 표준 모듈 문법 = 파일끼리 import로 가져오고 export로 내보내는 방식)
+        - type="module"이 없으면 일반 스크립트로 처리되어 import 문법 에러
+    - main.tsx
+        - 부트 스트랩 코드.
+        - React앱 초기화(앱을 처음 가동시킴)              //// CSS 프레임워크 Bootstrap이 아님
+
+
+-->

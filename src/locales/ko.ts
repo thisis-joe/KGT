@@ -123,19 +123,81 @@ export default {
     },
     info: {
       title: "연락처 정보",
-      headquarters: "본사 / 기술연구소",
-      hqAddress: "부산광역시 사하구 하신중앙로 54번길 40 2층 (장림동)",
-      branch: "경기영업지사",
-      branchAddress: "경기도 화성시 동탄첨단산업1로 27 금강펜테리움 IX타워 B동 3321호",
-      phone: "대표번호",
-      fax: "팩스",
+      headquarters: "Head Office / R&D Center",
+      hqAddress: "2F, 40, Hasinjungang-ro 54beon-gil (Jangnim-dong), Saha-gu, Busan, Republic of Korea",
+      branch: "Gyeonggi Sales Office",
+      branchAddress: "B-3321, Geumgang Penterium IX Tower, 27 Dongtancheomdansaneop 1-ro, Hwaseong-si, Gyeonggi-do, Republic of Korea",
+      phone: "Tel",
+      fax: "Fax",
       email: "이메일",
       website: "홈페이지"
     }
   },
+  contactPage: {
+    nav: {
+      companyProfile: "회사 소개",
+      product: "제품",
+      qualityControl: "품질 관리",
+      contactUs: "문의하기",
+      quickLinks: "바로가기",
+      products: "제품",
+      sustainability: "지속가능경영",
+      legal: "법적 고지",
+      privacyPolicy: "개인정보처리방침",
+      termsOfService: "이용약관",
+      sitemap: "사이트맵"
+    },
+    hero: {
+      title: "문의하기",
+      subtitle: "기능성 테이프 및 점·접착 소재 전문기업 KGT가 신속하고 신뢰할 수 있는 답변을 제공합니다."
+    },
+    locations: {
+      title: "사업장 안내",
+      headOffice: "Head Office / R&D Center",
+      headOfficeAddressLine1: "2F, 40, Hasinjungang-ro 54beon-gil (Jangnim-dong), Saha-gu",
+      headOfficeAddressLine2: "Busan, Republic of Korea",
+      branchOffice: "Gyeonggi Sales Office",
+      branchOfficeAddressLine1: "B-3321, Geumgang Penterium IX Tower, 27 Dongtancheomdansaneop 1-ro",
+      branchOfficeAddressLine2: "Hwaseong-si, Gyeonggi-do, Republic of Korea",
+      mapButton: "지도 보기",
+      mapAlt: "사업장 위치 지도"
+    },
+    form: {
+      title: "문의 접수",
+      description: "아래 양식을 작성해 주세요. * 표시는 필수 입력 항목입니다.",
+      yourName: "이름",
+      companyName: "회사명",
+      emailAddress: "이메일",
+      emailHint: "비워두면 기본 발신 주소로 전송됩니다:",
+      subject: "문의 유형",
+      message: "문의 내용",
+      privacyPrefix: "아래",
+      privacyPolicy: "개인정보처리방침",
+      privacyDescription: "에 동의하며, 문의 처리 목적에 한해 개인정보를 제공합니다.",
+      submit: "문의 보내기",
+      sending: "전송 중...",
+      success: "문의가 정상적으로 접수되었습니다.",
+      privacyError: "문의 전 개인정보처리방침 동의가 필요합니다.",
+      fallback: "서버 연결에 실패했습니다. 아래 이메일로 직접 문의해 주시기 바랍니다.",
+      mailConfigError: "메일 서버 설정이 완료되지 않았습니다. 관리자에게 문의하시거나 아래 이메일을 이용해 주시기 바랍니다.",
+      subjects: {
+        productInquiry: "제품 문의",
+        quotationRequest: "견적 요청",
+        technicalSupport: "기술 지원",
+        partnershipProposal: "협업 제안",
+        other: "기타"
+      }
+    },
+    footer: {
+      companyDescription: "KGT는 산업용 기능성 테이프와 첨단 점·접착 솔루션을 제공하는 신뢰 기반의 글로벌 파트너입니다.",
+      copyright: "© 2023 KGT Corporation. All rights reserved.",
+      linkedin: "링크드인",
+      twitter: "X"
+    }
+  },
   footer: {
     company: "KGT",
-    address: "부산광역시 사하구 하신중앙로 54번길 40 2층 (장림동)",
+    address: "2F, 40, Hasinjungang-ro 54beon-gil (Jangnim-dong), Saha-gu, Busan, Republic of Korea",
     copyright: "Copyright © 2024 KGT. All rights reserved."
   },
   stats: {
