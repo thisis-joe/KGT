@@ -6,16 +6,20 @@
 
 import { RouterProvider } from 'react-router-dom';  // React Router가 제공하는 “라우터 실행 컴포넌트” 가져옴  
 import { router } from './routes.tsx';              // 라우트 정의 객체(`createBrowserRouter(...)` 결과) 가져옴  
-import { TranslationProvider } from './utils/i18n'; // 다국어(i18n) 컨텍스트 제공 컴포넌트 가져옴  
+import { TranslationProvider } from './utils/i18n';
+import { ThemeProvider } from './utils/theme';     // 다크모드 테마 컨텍스트 제공 컴포넌트 가져옴
 import './styles/globals.css';                      // 전역 스타일 파일 로드
 
-export default function App() { //앱 루트 컴포넌트 기본 export로 선언 `main.tsx`에서 `import App from './App.tsx'`로 바로 가져올 수 있게 함  
+export default function App() { // 루트 컴포넌트 이름을 App으로하며, 이것을 기본 export로 선언. 
+                                // `main.tsx`에서 `import App from './App.tsx'`로 바로 가져올 수 있게 하는 역할임.
   return (
     <div className="min-h-screen font-sans">
-      <TranslationProvider>
-        <RouterProvider router={router} />
-      </TranslationProvider>
-    </div>  // <!--루트 레이아웃 wrapper 종료, 전체 앱 레이아웃 공통 스타일 적용 범위 닫힘  
+      <ThemeProvider>
+        <TranslationProvider>
+          <RouterProvider router={router} />
+        </TranslationProvider>
+      </ThemeProvider>
+    </div>
   );        // JSX 반환 종료  
 }
 

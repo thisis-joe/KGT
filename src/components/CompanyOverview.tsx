@@ -1,17 +1,8 @@
 import { useTranslation } from '../utils/i18n';
 
-const SECTION_TITLE_BY_LANGUAGE = {
-  ko: 'KGT를 선택해야 하는 이유',
-  en: 'Why Choose KGT',
-  zh: '选择KGT的理由',
-  ja: 'KGTが選ばれる理由',
-  es: 'Por Qué Elegir KGT',
-  fil: 'Bakit KGT',
-  vi: 'Vì Sao Chọn KGT',
-} as const;
 
 export function CompanyOverview() {
-  const { t, currentLanguage } = useTranslation();
+  const { t } = useTranslation();
 
   const features = [
     {
@@ -37,7 +28,7 @@ export function CompanyOverview() {
         {/* Section Header */}
         <div className="text-center mb-16">
           <h2 className="text-3xl font-['Oswald'] font-bold mb-4 uppercase tracking-wide text-gray-900 dark:text-white">
-            {SECTION_TITLE_BY_LANGUAGE[currentLanguage]}
+            {String(t('coreValues.sectionTitle'))}
           </h2>
           <div className="w-16 h-1 bg-[#FFD700] mx-auto"></div>
         </div>

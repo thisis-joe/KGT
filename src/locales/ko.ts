@@ -28,6 +28,7 @@ export default {
   },
   coreValues: {
     title: "Core Values",
+    sectionTitle: "KGT를 선택해야 하는 이유",
     creativity: {
       title: "창의 Creativity",
       subtitle: "긍정성 / Open Mind / 실력",
@@ -46,6 +47,9 @@ export default {
   },
   business: {
     title: "핵심 사업 포트폴리오",
+    subtitle: "고객 요구에 맞는 점·접착 솔루션을 제공합니다.",
+    downloadCatalog: "카탈로그 다운로드",
+    explore: "자세히 보기",
     filmTape: {
       title: "필름 & 테이프 사업",
       products: [
@@ -197,8 +201,29 @@ export default {
   },
   footer: {
     company: "KGT",
+    description: "KGT는 산업용 기능성 테이프와 첨단 점·접착 솔루션을 제공하는 신뢰 기반의 글로벌 파트너입니다.",
+    quickAccess: "바로가기",
+    naverStore: "네이버 스마트스토어",
+    sendSuggestion: "기능 제안하기",
+    contactTitle: "연락처",
     address: "2F, 40, Hasinjungang-ro 54beon-gil (Jangnim-dong), Saha-gu, Busan, Republic of Korea",
-    copyright: "Copyright © 2024 KGT. All rights reserved."
+    headOffice: "본사 / R&D 센터",
+    branchOffice: "경기 영업사무소",
+    copyright: "© 2023 KGT Global. All rights reserved.",
+    privacyPolicy: "개인정보처리방침",
+    termsOfService: "이용약관",
+    close: "닫기",
+    privacyContent1: "문의 응답 및 요청 서비스 제공에 필요한 최소한의 정보만 수집합니다.",
+    privacyContent2: "수집된 데이터는 업무 커뮤니케이션 목적으로만 사용되며, 법적 근거 없이 제3자에게 공유되지 않습니다.",
+    privacyContent3: "데이터 요청 또는 정정은 공식 문의 채널을 통해 회사에 연락해 주시기 바랍니다.",
+    termsContent1: "본 웹사이트 콘텐츠는 비즈니스 정보 제공 목적으로 제공되며, 사전 통지 없이 업데이트될 수 있습니다.",
+    termsContent2: "사전 서면 동의 없이 콘텐츠를 무단 복사, 재배포 또는 상업적으로 사용하는 것은 제한됩니다.",
+    termsContent3: "서비스 가용성은 유지보수 또는 운영 요구 사항에 따라 변경될 수 있습니다.",
+    featureSuggestion: "기능 제안",
+    suggestionName: "이름",
+    suggestionEmail: "이메일",
+    suggestionLabel: "제안 내용",
+    sendToDeveloper: "개발자에게 보내기"
   },
   stats: {
     title: "숫자로 보는 KGT",

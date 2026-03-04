@@ -28,6 +28,7 @@ export default {
   },
   coreValues: {
     title: "Mga Pangunahing Halaga",
+    sectionTitle: "Bakit KGT",
     creativity: {
       title: "Pagkamalikhain",
       subtitle: "Positibong Pag-iisip / Bukas na Isipan / Kakayahan",
@@ -46,6 +47,9 @@ export default {
   },
   business: {
     title: "Pangunahing Portfolio ng Negosyo",
+    subtitle: "Espesyal na solusyon para sa bawat pangangailangan sa adhesive.",
+    downloadCatalog: "I-download ang Catalog",
+    explore: "Tingnan",
     filmTape: {
       title: "Film & Tape Business",
       products: [
@@ -197,8 +201,29 @@ export default {
   },
   footer: {
     company: "KGT",
+    description: "Trusted provider of advanced adhesive solutions and functional tapes for industrial applications worldwide.",
+    quickAccess: "Quick Access",
+    naverStore: "Naver Smart Store",
+    sendSuggestion: "Send Feature Suggestion",
+    contactTitle: "Contact",
     address: "2F, 40, Hasinjungang-ro 54beon-gil (Jangnim-dong), Saha-gu, Busan, Republic of Korea",
-    copyright: "Copyright © 2024 KGT. Lahat ng karapatan ay nakalaan."
+    headOffice: "Head Office / R&D Center",
+    branchOffice: "Gyeonggi Sales Office",
+    copyright: "© 2023 KGT Global. All rights reserved.",
+    privacyPolicy: "Privacy Policy",
+    termsOfService: "Terms of Service",
+    close: "Close",
+    privacyContent1: "We collect only the minimum information required to respond to inquiries and provide requested services.",
+    privacyContent2: "Collected data is used solely for business communication and is not shared with third parties without legal grounds.",
+    privacyContent3: "For data requests or corrections, contact the company through the official inquiry channels.",
+    termsContent1: "This website content is provided for business information purposes and may be updated without prior notice.",
+    termsContent2: "Unauthorized copying, redistribution, or commercial use of content is restricted unless prior written consent is obtained.",
+    termsContent3: "Service availability may change due to maintenance or operational requirements.",
+    featureSuggestion: "Feature Suggestion",
+    suggestionName: "Name",
+    suggestionEmail: "Email",
+    suggestionLabel: "Suggestion",
+    sendToDeveloper: "Send to Developer"
   },
   stats: {
     title: "KGT sa Numero",

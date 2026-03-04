@@ -91,6 +91,18 @@ export function TranslationProvider({ children }: { children: ReactNode }) {
 export function useTranslation() {
   const context = useContext(TranslationContext);
 
+  // Rules of Hooks: hooks는 항상 최상단에서 호출해야 함 → early return 이전에 선언
+  // Provider 없이 단독 사용될 때를 위한 독립 상태 (fallback)
+  const [fallbackLanguage, setFallbackLanguage] = useState<Language>(getInitialLanguage);
+
+  useEffect(() => {
+    // Provider가 없을 때만 독립적으로 localStorage에 저장
+    if (!context && typeof window !== 'undefined') {
+      localStorage.setItem('language', fallbackLanguage);
+    }
+  }, [context, fallbackLanguage]);
+
+  // TranslationProvider 안에서 호출된 경우 → Context 값을 우선 사용
   if (context) {
     return {
       ...context,
@@ -98,22 +110,11 @@ export function useTranslation() {
     };
   }
 
-  const [currentLanguage, setCurrentLanguage] = useState<Language>(getInitialLanguage);
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('language', currentLanguage);
-    }
-  }, [currentLanguage]);
-
-  const t = (key: string): any => {
-    return getTranslationValue(currentLanguage, key);
-  };
-
+  // Provider 없이 단독으로 사용된 경우 → fallback 독립 상태 반환
   return {
-    t,
-    currentLanguage,
-    setLanguage: setCurrentLanguage,
+    t: (key: string): any => getTranslationValue(fallbackLanguage, key),
+    currentLanguage: fallbackLanguage,
+    setLanguage: setFallbackLanguage,
     languages,
   };
 }

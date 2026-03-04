@@ -2,43 +2,6 @@ import { ArrowRight, X } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from '../utils/i18n';
 
-const UI_LABELS = {
-  ko: {
-    subtitle: '고객 요구에 맞는 점·접착 솔루션을 제공합니다.',
-    downloadCatalog: '카탈로그 다운로드',
-    explore: '자세히 보기',
-  },
-  en: {
-    subtitle: 'Specialized solutions for every adhesive need.',
-    downloadCatalog: 'Download Catalog',
-    explore: 'Explore',
-  },
-  zh: {
-    subtitle: '为各类粘接需求提供专业解决方案。',
-    downloadCatalog: '下载目录',
-    explore: '查看详情',
-  },
-  ja: {
-    subtitle: 'あらゆる粘着ニーズに対応する専門ソリューションを提供します。',
-    downloadCatalog: 'カタログダウンロード',
-    explore: '詳細を見る',
-  },
-  es: {
-    subtitle: 'Soluciones especializadas para cada necesidad adhesiva.',
-    downloadCatalog: 'Descargar Catálogo',
-    explore: 'Explorar',
-  },
-  fil: {
-    subtitle: 'Espesyal na solusyon para sa bawat pangangailangan sa adhesive.',
-    downloadCatalog: 'I-download ang Catalog',
-    explore: 'Tingnan',
-  },
-  vi: {
-    subtitle: 'Giải pháp chuyên biệt cho mọi nhu cầu kết dính.',
-    downloadCatalog: 'Tải Catalog',
-    explore: 'Xem chi tiết',
-  },
-} as const;
 
 type PortfolioItem = {
   icon: string;
@@ -49,11 +12,10 @@ type PortfolioItem = {
 };
 
 export function BusinessPortfolio() {
-  const { t, currentLanguage } = useTranslation();
+  const { t } = useTranslation();
   const [activeItemIndex, setActiveItemIndex] = useState<number | null>(null);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
 
-  const uiLabels = UI_LABELS[currentLanguage];
 
   const filmProducts = (t('business.filmTape.products') || []) as Array<{ name: string }>;
   const materialProducts = (t('business.materials.products') || []) as Array<{ name: string }>;
@@ -129,7 +91,7 @@ export function BusinessPortfolio() {
                 {String(t('business.title'))}
               </h2>
               <p className="text-gray-500 dark:text-gray-400">
-                {uiLabels.subtitle}
+                {String(t('business.subtitle'))}
               </p>
             </div>
             <a
@@ -137,7 +99,7 @@ export function BusinessPortfolio() {
               download
               className="hidden md:flex items-center text-sm font-bold uppercase tracking-wide border-b-2 border-[#FFD700] pb-1 text-gray-900 dark:text-white hover:text-[#FFD700] transition-colors mt-4 md:mt-0"
             >
-              {uiLabels.downloadCatalog}
+              {String(t('business.downloadCatalog'))}
               <ArrowRight className="w-4 h-4 ml-1" />
             </a>
           </div>
@@ -180,7 +142,7 @@ export function BusinessPortfolio() {
                     onClick={() => openGallery(index)}
                     className="text-[#FFD700] text-sm font-bold uppercase tracking-wider flex items-center"
                   >
-                    {uiLabels.explore}
+                    {String(t('business.explore'))}
                     <ArrowRight className="w-4 h-4 ml-2" />
                   </button>
                 </div>

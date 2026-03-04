@@ -1,4 +1,5 @@
 import { FormEvent, useState } from 'react';
+import { useTranslation } from '../utils/i18n';
 
 type PolicyType = 'privacy' | 'terms' | null;
 
@@ -6,6 +7,7 @@ const DEVELOPER_EMAIL = 'wdg0434@gmail.com';
 const NAVER_STORE_URL = 'https://smartstore.naver.com';
 
 export function Footer() {
+  const { t } = useTranslation();
   const [activePolicy, setActivePolicy] = useState<PolicyType>(null);
   const [isSuggestionOpen, setIsSuggestionOpen] = useState(false);
   const [suggestion, setSuggestion] = useState({
@@ -43,7 +45,7 @@ export function Footer() {
                 <span className="font-['Oswald'] font-bold text-xl text-white tracking-tighter">GLOBAL</span>
               </div>
               <p className="text-sm leading-relaxed">
-                Trusted provider of advanced adhesive solutions and functional tapes for industrial applications worldwide.
+                {String(t('footer.description'))}
               </p>
 
               {/* Reserved for future official social channels */}
@@ -63,7 +65,7 @@ export function Footer() {
             </div>
 
             <div>
-              <h4 className="text-white font-bold uppercase tracking-wider mb-6 text-sm">Quick Access</h4>
+              <h4 className="text-white font-bold uppercase tracking-wider mb-6 text-sm">{String(t('footer.quickAccess'))}</h4>
               <div className="space-y-3 text-sm">
                 <a
                   href={NAVER_STORE_URL}
@@ -71,7 +73,7 @@ export function Footer() {
                   rel="noopener noreferrer"
                   className="inline-flex items-center px-3 py-2 border border-[#2DB400] text-[#2DB400] hover:bg-[#2DB400] hover:text-white transition-colors rounded-sm"
                 >
-                  Naver Smart Store
+                  {String(t('footer.naverStore'))}
                 </a>
                 <div>
                   <button
@@ -79,26 +81,26 @@ export function Footer() {
                     onClick={() => setIsSuggestionOpen(true)}
                     className="underline hover:text-white transition-colors"
                   >
-                    Send Feature Suggestion
+                    {String(t('footer.sendSuggestion'))}
                   </button>
                 </div>
               </div>
             </div>
 
             <div>
-              <h4 className="text-white font-bold uppercase tracking-wider mb-6 text-sm">Contact</h4>
+              <h4 className="text-white font-bold uppercase tracking-wider mb-6 text-sm">{String(t('footer.contactTitle'))}</h4>
               <ul className="space-y-3 text-sm">
                 <li className="flex items-start">
                   <span className="material-icons-outlined text-sm mr-2 mt-1 text-[#FFD700]">location_on</span>
-                  <span>2F, 40, Hasinjungang-ro 54beon-gil (Jangnim-dong), Saha-gu, Busan, Republic of Korea</span>
+                  <span>{String(t('footer.address'))}</span>
                 </li>
                 <li className="flex items-center">
                   <span className="material-icons-outlined text-sm mr-2 text-[#FFD700]">business</span>
-                  <span>Head Office / R&amp;D Center</span>
+                  <span>{String(t('footer.headOffice'))}</span>
                 </li>
                 <li className="flex items-center">
                   <span className="material-icons-outlined text-sm mr-2 text-[#FFD700]">store</span>
-                  <span>Gyeonggi Sales Office</span>
+                  <span>{String(t('footer.branchOffice'))}</span>
                 </li>
                 <li className="flex items-center">
                   <span className="material-icons-outlined text-sm mr-2 text-[#FFD700]">phone</span>
@@ -113,13 +115,13 @@ export function Footer() {
           </div>
 
           <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center text-xs">
-            <p>© 2023 KGT Global. All rights reserved.</p>
+            <p>{String(t('footer.copyright'))}</p>
             <div className="flex space-x-6 mt-4 md:mt-0">
               <button type="button" onClick={() => setActivePolicy('privacy')} className="hover:text-white transition-colors">
-                Privacy Policy
+                {String(t('footer.privacyPolicy'))}
               </button>
               <button type="button" onClick={() => setActivePolicy('terms')} className="hover:text-white transition-colors">
-                Terms of Service
+                {String(t('footer.termsOfService'))}
               </button>
             </div>
           </div>
@@ -130,21 +132,21 @@ export function Footer() {
         <div className="fixed inset-0 z-[100] bg-black/60 flex items-center justify-center p-4">
           <div className="w-full max-w-2xl bg-white text-gray-900 rounded-sm shadow-2xl">
             <div className="flex items-center justify-between border-b px-6 py-4">
-              <h3 className="font-bold text-lg">{activePolicy === 'privacy' ? 'Privacy Policy' : 'Terms of Service'}</h3>
-              <button type="button" onClick={() => setActivePolicy(null)} className="text-gray-500 hover:text-black">Close</button>
+              <h3 className="font-bold text-lg">{activePolicy === 'privacy' ? String(t('footer.privacyPolicy')) : String(t('footer.termsOfService'))}</h3>
+              <button type="button" onClick={() => setActivePolicy(null)} className="text-gray-500 hover:text-black">{String(t('footer.close'))}</button>
             </div>
             <div className="p-6 space-y-4 text-sm leading-relaxed max-h-[65vh] overflow-y-auto">
               {activePolicy === 'privacy' ? (
                 <>
-                  <p>We collect only the minimum information required to respond to inquiries and provide requested services.</p>
-                  <p>Collected data is used solely for business communication and is not shared with third parties without legal grounds.</p>
-                  <p>For data requests or corrections, contact the company through the official inquiry channels.</p>
+                  <p>{String(t('footer.privacyContent1'))}</p>
+                  <p>{String(t('footer.privacyContent2'))}</p>
+                  <p>{String(t('footer.privacyContent3'))}</p>
                 </>
               ) : (
                 <>
-                  <p>This website content is provided for business information purposes and may be updated without prior notice.</p>
-                  <p>Unauthorized copying, redistribution, or commercial use of content is restricted unless prior written consent is obtained.</p>
-                  <p>Service availability may change due to maintenance or operational requirements.</p>
+                  <p>{String(t('footer.termsContent1'))}</p>
+                  <p>{String(t('footer.termsContent2'))}</p>
+                  <p>{String(t('footer.termsContent3'))}</p>
                 </>
               )}
             </div>
@@ -156,12 +158,12 @@ export function Footer() {
         <div className="fixed inset-0 z-[100] bg-black/60 flex items-center justify-center p-4">
           <div className="w-full max-w-xl bg-white text-gray-900 rounded-sm shadow-2xl">
             <div className="flex items-center justify-between border-b px-6 py-4">
-              <h3 className="font-bold text-lg">Feature Suggestion</h3>
-              <button type="button" onClick={() => setIsSuggestionOpen(false)} className="text-gray-500 hover:text-black">Close</button>
+              <h3 className="font-bold text-lg">{String(t('footer.featureSuggestion'))}</h3>
+              <button type="button" onClick={() => setIsSuggestionOpen(false)} className="text-gray-500 hover:text-black">{String(t('footer.close'))}</button>
             </div>
             <form onSubmit={handleSuggestionSubmit} className="p-6 space-y-4">
               <div>
-                <label className="block text-sm font-medium mb-1" htmlFor="suggestion-name">Name</label>
+                <label className="block text-sm font-medium mb-1" htmlFor="suggestion-name">{String(t('footer.suggestionName'))}</label>
                 <input
                   id="suggestion-name"
                   type="text"
@@ -171,7 +173,7 @@ export function Footer() {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium mb-1" htmlFor="suggestion-email">Email</label>
+                <label className="block text-sm font-medium mb-1" htmlFor="suggestion-email">{String(t('footer.suggestionEmail'))}</label>
                 <input
                   id="suggestion-email"
                   type="email"
@@ -181,7 +183,7 @@ export function Footer() {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium mb-1" htmlFor="suggestion-message">Suggestion</label>
+                <label className="block text-sm font-medium mb-1" htmlFor="suggestion-message">{String(t('footer.suggestionLabel'))}</label>
                 <textarea
                   id="suggestion-message"
                   rows={5}
@@ -192,7 +194,7 @@ export function Footer() {
                 />
               </div>
               <button type="submit" className="bg-black text-white px-4 py-2 rounded-sm hover:bg-[#222]">
-                Send to Developer
+                {String(t('footer.sendToDeveloper'))}
               </button>
             </form>
           </div>

@@ -4,6 +4,7 @@ import { api } from '../services/api';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from '../utils/i18n';
 import { Footer } from '../components/Footer';
+import { useTheme } from '../utils/theme';
 
 const DEFAULT_SENDER_EMAIL = 'client.kgt.web@gmail.com';
 const RECEIVER_EMAIL = import.meta.env.VITE_CONTACT_RECEIVER_EMAIL || 'zaxs124124@gmail.com';
@@ -53,9 +54,9 @@ function loadScript(id: string, src: string): Promise<void> {
 export function ContactPage() {
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const { isDark, toggleTheme } = useTheme();
   const mapRef = useRef<HTMLDivElement | null>(null);
 
-  const [isDark, setIsDark] = useState(false);
   const [mapProvider, setMapProvider] = useState<MapProvider>('naver');
   const [mapStatus, setMapStatus] = useState<MapStatus>('idle');
   const [currentPosition, setCurrentPosition] = useState<{ lat: number; lng: number } | null>(null);
@@ -277,13 +278,9 @@ export function ContactPage() {
     }
   };
 
-  const toggleDarkMode = () => {
-    setIsDark(!isDark);
-    document.documentElement.classList.toggle('dark');
-  };
 
   return (
-    <div className={`min-h-screen ${isDark ? 'dark' : ''}`}>
+    <div className="min-h-screen">
       <header className="fixed top-0 w-full z-50 bg-white/90 dark:bg-black/90 backdrop-blur-sm border-b border-gray-200 dark:border-gray-800 transition-colors duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-20">
@@ -296,7 +293,7 @@ export function ContactPage() {
 
             <span className="text-sm font-bold text-[#FFD700] uppercase tracking-wider">{String(t('contactPage.nav.contactUs'))}</span>
 
-            <button onClick={toggleDarkMode} className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+            <button onClick={toggleTheme} className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
               {isDark ? <Sun className="w-5 h-5 text-gray-300" /> : <Moon className="w-5 h-5 text-gray-600" />}
             </button>
           </div>

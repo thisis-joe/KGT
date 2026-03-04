@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
-import { Menu, ChevronDown } from 'lucide-react';
+import { Menu, ChevronDown, Sun, Moon } from 'lucide-react';
 import { useTranslation } from '../utils/i18n';
 import { useNavigate } from 'react-router-dom';
+import { useTheme } from '../utils/theme';
 
 export function Header() {
   const { t, currentLanguage, setLanguage, languages } = useTranslation();
+  const { isDark, toggleTheme } = useTheme();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isLangDropdownOpen, setIsLangDropdownOpen] = useState(false);
   const navigate = useNavigate();
@@ -61,7 +63,16 @@ export function Header() {
           </nav>
 
           {/* Right Section */}
-          <div className="hidden lg:flex items-center space-x-6 ml-auto">
+          <div className="hidden lg:flex items-center space-x-4 ml-auto">
+            {/* Dark Mode Toggle */}
+            <button
+              onClick={toggleTheme}
+              className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+              aria-label="Toggle dark mode"
+            >
+              {isDark ? <Sun className="w-5 h-5 text-gray-300" /> : <Moon className="w-5 h-5 text-gray-600" />}
+            </button>
+
             {/* Language Selector */}
             <div className="relative">
               <button
@@ -107,7 +118,14 @@ export function Header() {
           </div>
 
           {/* Mobile Menu Button */}
-          <div className="lg:hidden flex items-center">
+          <div className="lg:hidden flex items-center gap-2">
+            <button
+              onClick={toggleTheme}
+              className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+              aria-label="Toggle dark mode"
+            >
+              {isDark ? <Sun className="w-5 h-5 text-gray-300" /> : <Moon className="w-5 h-5 text-gray-600" />}
+            </button>
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="text-gray-800 dark:text-white focus:outline-none"
