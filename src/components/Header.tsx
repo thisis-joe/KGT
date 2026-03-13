@@ -19,7 +19,7 @@ export function Header() {
     { key: 'store', label: t('nav.store') },
   ];
 
-  const currentLang = languages.find(l => l.code === currentLanguage);
+  const currentLang = languages.find((l) => l.code === currentLanguage);
 
   // Close dropdowns when clicking outside
   useEffect(() => {
@@ -52,8 +52,15 @@ export function Header() {
 
   const closeMobileMenu = () => setIsMobileMenuOpen(false);
 
+  const handleNavClick = (e: React.MouseEvent, key: string) => {
+    if (key === 'store') {
+      e.preventDefault();
+      alert(String(t('nav.storeNotice')));
+    }
+  };
+
   return (
-    <header className="fixed w-full top-0 z-50 bg-white/95 dark:bg-[#0f0f0f]/95 border-b border-gray-200 dark:border-gray-800 backdrop-blur-sm transition-colors duration-300">
+    <header className="fixed w-full top-0 z-50 bg-white/95 dark:bg-[#0f0f0f]/95 backdrop-blur-sm transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           {/* Left: Hamburger (mobile) + Logo */}
@@ -92,11 +99,12 @@ export function Header() {
           </div>
 
           {/* Desktop Navigation — hidden on mobile */}
-          <nav className="hidden md:flex items-center" style={{ gap: 'clamp(1rem, 4vw, 5rem)'}}>
+          <nav className="hidden md:flex items-center" style={{ gap: 'clamp(1rem, 4vw, 5rem)' }}>
             {navItems.map((item) => (
               <a
                 key={item.key}
                 href={`#${item.key}`}
+                onClick={(e) => handleNavClick(e, item.key)}
                 className="text-sm font-semibold uppercase tracking-wide text-gray-800 dark:text-gray-200 hover:text-[#FFD700] dark:hover:text-[#FFD700] transition-colors whitespace-nowrap"
               >
                 {item.label}
@@ -105,14 +113,18 @@ export function Header() {
           </nav>
 
           {/* Right Section */}
-          <div className="flex items-center" style={{ gap: 'clamp(0.3rem, 2vw, 3rem)'}}>
+          <div className="flex items-center" style={{ gap: 'clamp(0.3rem, 2vw, 3rem)' }}>
             {/* Dark Mode Toggle — desktop only */}
             <button
               onClick={toggleTheme}
               className="hidden md:inline-flex p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
               aria-label="Toggle dark mode"
             >
-              {isDark ? <Sun className="w-5 h-5 text-gray-300" /> : <Moon className="w-5 h-5 text-gray-600" />}
+              {isDark ? (
+                <Sun className="w-5 h-5 text-gray-300" />
+              ) : (
+                <Moon className="w-5 h-5 text-gray-600" />
+              )}
             </button>
 
             {/* Language Selector — desktop only */}
@@ -175,7 +187,10 @@ export function Header() {
               <a
                 key={item.key}
                 href={`#${item.key}`}
-                onClick={closeMobileMenu}
+                onClick={(e) => {
+                  handleNavClick(e, item.key);
+                  closeMobileMenu();
+                }}
                 className="text-sm font-semibold uppercase tracking-wide text-gray-800 dark:text-gray-200 hover:text-[#FFD700] dark:hover:text-[#FFD700] transition-colors py-3 px-2 rounded-md hover:bg-gray-50 dark:hover:bg-gray-800/50"
               >
                 {item.label}
@@ -241,6 +256,8 @@ export function Header() {
           </div>
         </div>
       </div>
+      {/* Header-body divider */}
+      <div className="h-[2px] bg-gradient-to-r from-transparent via-[#FFD700]/60 to-transparent" />
     </header>
   );
 }

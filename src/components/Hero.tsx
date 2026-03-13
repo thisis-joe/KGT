@@ -7,13 +7,13 @@ export function Hero() {
   return (
     <section className="relative h-screen flex items-center overflow-hidden">
       {/* Background Image with Overlay */}
-      <div 
+      <div
         className="absolute inset-0 bg-cover bg-center"
         style={{
           backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.4)), url('https://images.unsplash.com/photo-1755937303351-57ad0f70f773?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxpbmR1c3RyaWFsJTIwYWRoZXNpdmUlMjB0YXBlJTIwbWFudWZhY3R1cmluZyUyMGZhY2lsaXR5fGVufDF8fHx8MTc3MTU1ODI0N3ww&ixlib=rb-4.1.0&q=80&w=1080')`,
         }}
       />
-      
+
       {/* Dark Overlay for Dark Mode */}
       <div className="absolute inset-0 bg-black/30 dark:bg-black/50" />
 
@@ -26,12 +26,12 @@ export function Hero() {
           </div>
 
           {/* Main Heading */}
-          <h1 className="font-['Oswald'] font-bold text-white mb-6 leading-[1.15] text-5xl md:text-7xl break-keep max-w-4xl">
+          <h1 className="font-['Oswald'] font-bold text-white mb-6 leading-[1.15] text-5xl md:text-7xl break-keep max-w-4xl whitespace-pre-line">
             {t('hero.title')}
           </h1>
 
           {/* Description */}
-          <p className="text-lg md:text-xl text-gray-200 mb-10 max-w-xl font-light leading-relaxed">
+          <p className="text-lg md:text-xl text-gray-200 mb-10 max-w-xl font-light leading-relaxed whitespace-pre-line">
             {t('hero.subtitle')}
           </p>
 

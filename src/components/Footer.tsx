@@ -1,6 +1,7 @@
 import { FormEvent, useState } from 'react';
-import { MapPin, Building2, Store, Phone, Printer } from 'lucide-react';
+import { Building2, Store, Phone, Printer } from 'lucide-react';
 import { useTranslation } from '../utils/i18n';
+import { features } from '../config/features';
 
 type PolicyType = 'privacy' | 'terms' | null;
 
@@ -68,6 +69,7 @@ export function Footer() {
             <div>
               <h4 className="text-white font-bold uppercase tracking-wider mb-6 text-sm">{String(t('footer.quickAccess'))}</h4>
               <div className="space-y-3 text-sm">
+                {features.naverStore && (
                 <a
                   href={NAVER_STORE_URL}
                   target="_blank"
@@ -76,6 +78,7 @@ export function Footer() {
                 >
                   {String(t('footer.naverStore'))}
                 </a>
+                )}
                 <div>
                   <button
                     type="button"
@@ -90,18 +93,20 @@ export function Footer() {
 
             <div>
               <h4 className="text-white font-bold uppercase tracking-wider mb-6 text-sm">{String(t('footer.contactTitle'))}</h4>
-              <ul className="space-y-3 text-sm">
+              <ul className="space-y-4 text-sm">
                 <li className="flex items-start">
-                  <MapPin className="w-4 h-4 mr-2 mt-1 text-[#FFD700] flex-shrink-0" />
-                  <span>{String(t('footer.address'))}</span>
+                  <Building2 className="w-4 h-4 mr-2 mt-0.5 text-[#FFD700] flex-shrink-0" />
+                  <div>
+                    <span className="text-white font-medium">{String(t('footer.headOffice'))}</span>
+                    <p className="mt-1">{String(t('footer.headOfficeAddress'))}</p>
+                  </div>
                 </li>
-                <li className="flex items-center">
-                  <Building2 className="w-4 h-4 mr-2 text-[#FFD700] flex-shrink-0" />
-                  <span>{String(t('footer.headOffice'))}</span>
-                </li>
-                <li className="flex items-center">
-                  <Store className="w-4 h-4 mr-2 text-[#FFD700] flex-shrink-0" />
-                  <span>{String(t('footer.branchOffice'))}</span>
+                <li className="flex items-start">
+                  <Store className="w-4 h-4 mr-2 mt-0.5 text-[#FFD700] flex-shrink-0" />
+                  <div>
+                    <span className="text-white font-medium">{String(t('footer.branchOffice'))}</span>
+                    <p className="mt-1">{String(t('footer.branchOfficeAddress'))}</p>
+                  </div>
                 </li>
                 <li className="flex items-center">
                   <Phone className="w-4 h-4 mr-2 text-[#FFD700] flex-shrink-0" />

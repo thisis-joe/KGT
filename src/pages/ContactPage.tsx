@@ -522,7 +522,7 @@ export function ContactPage() {
         </section>
       </main>
 
-      <Footer />
+
     </div>
   );
 }

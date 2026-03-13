@@ -3,6 +3,7 @@ import { Hero } from '../components/Hero';
 import { CompanyOverview } from '../components/CompanyOverview';
 import { BusinessPortfolio } from '../components/BusinessPortfolio';
 import { StoreSection } from '../components/StoreSection';
+import { features } from '../config/features';
 import { Footer } from '../components/Footer';
 import { ScrollReveal } from '../components/ScrollReveal';
 import { ScrollToTop } from '../components/ScrollToTop';
@@ -22,9 +23,11 @@ export function HomePage() {
           <BusinessPortfolio />
         </ScrollReveal>
         
+        {features.naverStore && (
         <ScrollReveal>
           <StoreSection />
         </ScrollReveal>
+        )}
       </main>
       <Footer />
       <ScrollToTop />
