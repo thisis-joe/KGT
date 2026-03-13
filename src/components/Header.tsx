@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Menu, ChevronDown, Sun, Moon } from 'lucide-react';
+import { ChevronDown, Sun, Moon } from 'lucide-react';
 import { useTranslation } from '../utils/i18n';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../utils/theme';
@@ -7,7 +7,6 @@ import { useTheme } from '../utils/theme';
 export function Header() {
   const { t, currentLanguage, setLanguage, languages } = useTranslation();
   const { isDark, toggleTheme } = useTheme();
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isLangDropdownOpen, setIsLangDropdownOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -33,7 +32,7 @@ export function Header() {
   return (
     <header className="fixed w-full top-0 z-50 bg-white/95 dark:bg-[#0f0f0f]/95 border-b border-gray-200 dark:border-gray-800 backdrop-blur-sm transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center h-20">
+        <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <button
             onClick={() => navigate('/')}
@@ -49,13 +48,25 @@ export function Header() {
             </span>
           </button>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden lg:flex flex-1 justify-center gap-14 px-10">
+          {/* Desktop Navigation — centered via justify-between */}
+
+          {/* 변경 전: <nav className=" lg:flex items-center gap-20">
+            * 변경 후: <nav className="flex items-center" style={{ gap: 'clamp(1rem, 4vw, 5rem)'}}>
+                                  
+                              항상 flex 적용             유동 gap (16px ~ 80px)
+            * lg:flex → flex로 바꾼 이유: 모바일에서도 보이기위해 항상 display: flex가 필요
+                                        . lg:flex만 있으면 1024px 미만에서 flex가 꺼지고, gap이 무시됨
+          
+            * clamp(1rem, 4vw, 5rem) 값의 의미:
+              - 1rem (16px): 아무리 좁아도 이 이하로는 gap이 줄지 않음
+              - 4vw: 화면 너비의 4%를 gap으로 사용 (비례 스케일링)
+              - 5rem (80px): 아무리 넓어도 이 이상으로 gap이 커지지 않음 (= gap-20과 동일) */}
+          <nav className="flex items-center" style={{ gap: 'clamp(1rem, 4vw, 5rem)'}}>
             {navItems.map((item) => (
               <a
                 key={item.key}
                 href={`#${item.key}`}
-                className="text-sm font-semibold uppercase tracking-wide text-gray-800 dark:text-gray-200 hover:text-[#FFD700] dark:hover:text-[#FFD700] transition-colors"
+                className="text-sm font-semibold uppercase tracking-wide text-gray-800 dark:text-gray-200 hover:text-[#FFD700] dark:hover:text-[#FFD700] transition-colors whitespace-nowrap"
               >
                 {item.label}
               </a>
@@ -63,7 +74,7 @@ export function Header() {
           </nav>
 
           {/* Right Section */}
-          <div className="hidden lg:flex items-center space-x-4 ml-auto">
+          <div className="flex items-center" style={{ gap: 'clamp(0.3rem, 2vw, 3rem)'}}>
             {/* Dark Mode Toggle */}
             <button
               onClick={toggleTheme}
@@ -117,8 +128,8 @@ export function Header() {
             </button>
           </div>
 
-          {/* Mobile Menu Button */}
-          <div className="lg:hidden flex items-center gap-2">
+          {/* Mobile: Dark Mode Toggle
+          <div className="lg:hidden">
             <button
               onClick={toggleTheme}
               className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
@@ -126,66 +137,8 @@ export function Header() {
             >
               {isDark ? <Sun className="w-5 h-5 text-gray-300" /> : <Moon className="w-5 h-5 text-gray-600" />}
             </button>
-            <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="text-gray-800 dark:text-white focus:outline-none"
-            >
-              <Menu className="w-8 h-8" />
-            </button>
-          </div>
+          </div> */}
         </div>
-
-        {/* Mobile Menu */}
-        {isMobileMenuOpen && (
-          <div className="lg:hidden border-t border-gray-200 dark:border-gray-800 py-4">
-            <nav className="flex flex-col space-y-4">
-              {navItems.map((item) => (
-                <a
-                  key={item.key}
-                  href={`#${item.key}`}
-                  className="text-sm font-semibold uppercase tracking-wide text-gray-800 dark:text-gray-200 hover:text-[#FFD700] transition-colors"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  {item.label}
-                </a>
-              ))}
-
-              <div className="pt-4 border-t border-gray-200 dark:border-gray-800">
-                <div className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">
-                  Language
-                </div>
-                <div className="grid grid-cols-2 gap-2">
-                  {languages.map((lang) => (
-                    <button
-                      key={lang.code}
-                      onClick={() => {
-                        setLanguage(lang.code);
-                        setIsMobileMenuOpen(false);
-                      }}
-                      className={`px-3 py-2 text-sm border rounded-sm transition-colors ${
-                        currentLanguage === lang.code
-                          ? 'bg-[#FFD700] text-black border-[#FFD700] font-medium'
-                          : 'border-gray-300 dark:border-gray-700 text-gray-800 dark:text-gray-200 hover:border-[#FFD700]'
-                      }`}
-                    >
-                      {lang.nativeName}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              <button
-                onClick={() => {
-                  navigate('/contact');
-                  setIsMobileMenuOpen(false);
-                }}
-                className="bg-[#FFD700] text-black px-6 py-2 text-sm font-bold uppercase tracking-wider hover:bg-[#FFA000] transition-colors rounded-sm"
-              >
-                {t('nav.contact')}
-              </button>
-            </nav>
-          </div>
-        )}
       </div>
     </header>
   );

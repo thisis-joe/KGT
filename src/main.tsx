@@ -1,8 +1,9 @@
 
   import { createRoot } from "react-dom/client";  //React 18의 “렌더링 엔진 진입 API”
   import App from "./App.tsx";                    //리액트 앱을 가져오자
-  import "./index.css";                           //css도 가져오자
-
+  // import "./index.css";                           //css도 가져오자
+  import "./styles/globals.css";
+  
   createRoot(document.getElementById("root")!).render(<App />);  //리액트 앱을 초기화시키자
 
   /*

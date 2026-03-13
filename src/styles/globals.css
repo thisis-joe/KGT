@@ -1,5 +1,12 @@
+
+@import "tailwindcss";
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Oswald:wght@500;700&display=swap');
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons+Outlined');
+
+/* @import "tailwindcss" 역할
+  - Tailwind의 base/components/utilities 레이어 전부 활성화 
+  - 프로젝트 소스 파일을 스캔해서 사용된 클래스만 CSS 생성 
+  - gap-[clamp(1rem, 4vw, 5rem)] 같은 임의값도 자동 생성 */
 
 @custom-variant dark (&:is(.dark *));
 

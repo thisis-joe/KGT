@@ -5,6 +5,8 @@ import react from '@vitejs/plugin-react-swc';
 import { defineConfig, loadEnv } from 'vite';
 import type { Connect, Plugin } from 'vite';
 
+import tailwindcss from '@tailwindcss/vite';
+
 interface ContactRequestBody {
   name: string;
   company?: string;
@@ -152,8 +154,11 @@ export default defineConfig(({ mode }) => {
       .filter(Boolean),
   };
 
+  // 왜 react() 앞에 tailwindcss() 인가 : 
+  // Vite 플러그인은 배열 순서대로 실행됨.
+  // CSS 처리(Tailwind)가 React JSX 변환보다 먼저 돼야함.
   return {
-    plugins: [react(), createContactApiPlugin(mailConfig)],
+    plugins: [tailwindcss(), react(), createContactApiPlugin(mailConfig)],
     resolve: {
       extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
       alias: {

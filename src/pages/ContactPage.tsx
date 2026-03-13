@@ -290,9 +290,6 @@ export function ContactPage() {
                 <div className="absolute inset-0 border-2 border-[#FFD700] rounded-full opacity-30 rotate-12"></div>
               </div>
             </button>
-
-            <span className="text-sm font-bold text-[#FFD700] uppercase tracking-wider">{String(t('contactPage.nav.contactUs'))}</span>
-
             <button onClick={toggleTheme} className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
               {isDark ? <Sun className="w-5 h-5 text-gray-300" /> : <Moon className="w-5 h-5 text-gray-600" />}
             </button>

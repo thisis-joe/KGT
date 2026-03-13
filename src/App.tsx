@@ -8,7 +8,7 @@ import { RouterProvider } from 'react-router-dom';  // React Router가 제공하
 import { router } from './routes.tsx';              // 라우트 정의 객체(`createBrowserRouter(...)` 결과) 가져옴  
 import { TranslationProvider } from './utils/i18n';
 import { ThemeProvider } from './utils/theme';     // 다크모드 테마 컨텍스트 제공 컴포넌트 가져옴
-import './styles/globals.css';                      // 전역 스타일 파일 로드
+// import './styles/globals.css';                      // 전역 스타일은 main.tsx하는것으로 변경하였음.
 
 export default function App() { // 루트 컴포넌트 이름을 App으로하며, 이것을 기본 export로 선언. 
                                 // `main.tsx`에서 `import App from './App.tsx'`로 바로 가져올 수 있게 하는 역할임.
