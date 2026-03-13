@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, FormEvent } from 'react';
-import { Send, Sun, Moon } from 'lucide-react';
+import { Send, Sun, Moon, Building2, Store, Phone, Printer } from 'lucide-react';
 import { api } from '../services/api';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from '../utils/i18n';
@@ -453,28 +453,28 @@ export function ContactPage() {
 
                 <div className="mb-10 group">
                   <h3 className="text-xl font-bold mb-3 flex items-center gap-2 group-hover:text-[#FFD700] transition-colors dark:text-white">
-                    <span className="material-icons-outlined text-[#FFD700]">location_city</span>
+                    <Building2 className="w-5 h-5 text-[#FFD700]" />
                     {String(t('contactPage.locations.headOffice'))}
                   </h3>
                   <address className="not-italic text-gray-600 dark:text-gray-400 pl-8 space-y-2 border-l border-gray-200 dark:border-gray-700 ml-3">
                     <p>{HEAD_OFFICE_ADDRESS}</p>
                     <div className="pt-2 flex items-center gap-4 text-sm font-medium flex-wrap">
-                      <span className="flex items-center gap-1"><span className="material-icons-outlined text-sm">phone</span> 051-265-7481</span>
-                      <span className="flex items-center gap-1"><span className="material-icons-outlined text-sm">fax</span> 051-266-7481</span>
+                      <span className="flex items-center gap-1"><Phone className="w-3.5 h-3.5" /> 051-265-7481</span>
+                      <span className="flex items-center gap-1"><Printer className="w-3.5 h-3.5" /> 051-266-7481</span>
                     </div>
                   </address>
                 </div>
 
                 <div className="group">
                   <h3 className="text-xl font-bold mb-3 flex items-center gap-2 group-hover:text-[#FFD700] transition-colors dark:text-white">
-                    <span className="material-icons-outlined text-[#FFD700]">store</span>
+                    <Store className="w-5 h-5 text-[#FFD700]" />
                     {String(t('contactPage.locations.branchOffice'))}
                   </h3>
                   <address className="not-italic text-gray-600 dark:text-gray-400 pl-8 space-y-2 border-l border-gray-200 dark:border-gray-700 ml-3">
                     <p>{BRANCH_ADDRESS}</p>
                     <div className="pt-2 flex items-center gap-4 text-sm font-medium flex-wrap">
-                      <span className="flex items-center gap-1"><span className="material-icons-outlined text-sm">phone</span> 051-265-7481</span>
-                      <span className="flex items-center gap-1"><span className="material-icons-outlined text-sm">fax</span> 051-266-7481</span>
+                      <span className="flex items-center gap-1"><Phone className="w-3.5 h-3.5" /> 051-265-7481</span>
+                      <span className="flex items-center gap-1"><Printer className="w-3.5 h-3.5" /> 051-266-7481</span>
                     </div>
                   </address>
                 </div>

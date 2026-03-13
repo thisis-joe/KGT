@@ -1,4 +1,5 @@
 import { FormEvent, useState } from 'react';
+import { MapPin, Building2, Store, Phone, Printer } from 'lucide-react';
 import { useTranslation } from '../utils/i18n';
 
 type PolicyType = 'privacy' | 'terms' | null;
@@ -91,23 +92,23 @@ export function Footer() {
               <h4 className="text-white font-bold uppercase tracking-wider mb-6 text-sm">{String(t('footer.contactTitle'))}</h4>
               <ul className="space-y-3 text-sm">
                 <li className="flex items-start">
-                  <span className="material-icons-outlined text-sm mr-2 mt-1 text-[#FFD700]">location_on</span>
+                  <MapPin className="w-4 h-4 mr-2 mt-1 text-[#FFD700] flex-shrink-0" />
                   <span>{String(t('footer.address'))}</span>
                 </li>
                 <li className="flex items-center">
-                  <span className="material-icons-outlined text-sm mr-2 text-[#FFD700]">business</span>
+                  <Building2 className="w-4 h-4 mr-2 text-[#FFD700] flex-shrink-0" />
                   <span>{String(t('footer.headOffice'))}</span>
                 </li>
                 <li className="flex items-center">
-                  <span className="material-icons-outlined text-sm mr-2 text-[#FFD700]">store</span>
+                  <Store className="w-4 h-4 mr-2 text-[#FFD700] flex-shrink-0" />
                   <span>{String(t('footer.branchOffice'))}</span>
                 </li>
                 <li className="flex items-center">
-                  <span className="material-icons-outlined text-sm mr-2 text-[#FFD700]">phone</span>
+                  <Phone className="w-4 h-4 mr-2 text-[#FFD700] flex-shrink-0" />
                   <span>051-265-7481</span>
                 </li>
                 <li className="flex items-center">
-                  <span className="material-icons-outlined text-sm mr-2 text-[#FFD700]">fax</span>
+                  <Printer className="w-4 h-4 mr-2 text-[#FFD700] flex-shrink-0" />
                   <span>051-266-7481</span>
                 </li>
               </ul>

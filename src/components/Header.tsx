@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { ChevronDown, Sun, Moon, Menu, X } from 'lucide-react';
+import { ChevronDown, Sun, Moon, Menu, X, Globe } from 'lucide-react';
 import { useTranslation } from '../utils/i18n';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../utils/theme';
@@ -124,7 +124,7 @@ export function Header() {
                 }}
                 className="flex items-center text-sm font-medium text-gray-800 dark:text-gray-200 hover:text-[#FFD700] dark:hover:text-[#FFD700] transition-colors"
               >
-                <span className="material-icons-outlined text-lg mr-1">language</span>
+                <Globe className="w-4 h-4 mr-1" />
                 {currentLang?.code.toUpperCase()}
                 <ChevronDown className="w-4 h-4 ml-1" />
               </button>
@@ -213,7 +213,7 @@ export function Header() {
                 }}
                 className="flex items-center text-sm font-medium text-gray-800 dark:text-gray-200 hover:text-[#FFD700] dark:hover:text-[#FFD700] transition-colors p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800"
               >
-                <span className="material-icons-outlined text-lg mr-1">language</span>
+                <Globe className="w-4 h-4 mr-1" />
                 {currentLang?.code.toUpperCase()}
                 <ChevronDown className="w-4 h-4 ml-1" />
               </button>
