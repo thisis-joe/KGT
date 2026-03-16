@@ -14,7 +14,7 @@ declare global {
     readonly env: ImportMetaEnv;
   }
 
-  interface NaverMapInstance {}
+  // interface NaverMapInstance {}
 
   interface NaverMapsNamespace {
     Map: new (
