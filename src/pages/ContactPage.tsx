@@ -19,7 +19,7 @@ import { useTheme } from '../utils/theme';
 const DEFAULT_SENDER_EMAIL = 'client.kgt.web@gmail.com';
 const RECEIVER_EMAIL = import.meta.env.VITE_CONTACT_RECEIVER_EMAIL || 'zaxs124124@gmail.com';
 
-const NAVER_MAP_CLIENT_ID = import.meta.env.VITE_NAVER_MAP_CLIENT_ID || '';
+const NAVER_MAP_KEY_ID = import.meta.env.VITE_NAVER_MAP_KEY_ID || '';
 const KAKAO_MAP_APP_KEY = import.meta.env.VITE_KAKAO_MAP_APP_KEY || '';
 
 type MapProvider = 'naver' | 'kakao';
@@ -123,7 +123,7 @@ export function ContactPage() {
     const userCoords = currentPosition || HEAD_OFFICE_COORDS;
 
     const renderNaverMap = async () => {
-      if (!NAVER_MAP_CLIENT_ID) {
+      if (!NAVER_MAP_KEY_ID) {
         setMapStatus('error');
         return;
       }
@@ -133,7 +133,7 @@ export function ContactPage() {
       try {
         await loadScript(
           'naver-map-sdk',
-          `https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${NAVER_MAP_CLIENT_ID}`
+          `https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${NAVER_MAP_KEY_ID}`
         );
 
         if (!window.naver?.maps) {
@@ -141,26 +141,28 @@ export function ContactPage() {
           return;
         }
 
-        const map = new window.naver.maps.Map(container, {
-          center: new window.naver.maps.LatLng(HEAD_OFFICE_COORDS.lat, HEAD_OFFICE_COORDS.lng),
+        const { maps } = window.naver;
+
+        const map = new maps.Map(container, {
+          center: new maps.LatLng(HEAD_OFFICE_COORDS.lat, HEAD_OFFICE_COORDS.lng),
           zoom: 13,
         });
 
-        new window.naver.maps.Marker({
-          position: new window.naver.maps.LatLng(HEAD_OFFICE_COORDS.lat, HEAD_OFFICE_COORDS.lng),
+        new maps.Marker({
+          position: new maps.LatLng(HEAD_OFFICE_COORDS.lat, HEAD_OFFICE_COORDS.lng),
           map,
           title: 'KGT Head Office / R&D Center',
         });
 
         if (currentPosition) {
-          new window.naver.maps.Marker({
-            position: new window.naver.maps.LatLng(userCoords.lat, userCoords.lng),
+          new maps.Marker({
+            position: new maps.LatLng(userCoords.lat, userCoords.lng),
             map,
             title: 'Current Location',
             icon: {
               content:
                 '<div style="width:12px;height:12px;border-radius:999px;background:#03C75A;border:2px solid white;box-shadow:0 0 0 2px #03C75A66"></div>',
-              anchor: new window.naver.maps.Point(6, 6),
+              anchor: new maps.Point(6, 6),
             },
           });
         }
@@ -190,23 +192,25 @@ export function ContactPage() {
           return;
         }
 
-        window.kakao.maps.load(() => {
-          const map = new window.kakao.maps.Map(container, {
-            center: new window.kakao.maps.LatLng(HEAD_OFFICE_COORDS.lat, HEAD_OFFICE_COORDS.lng),
+        const { maps } = window.kakao;
+
+        maps.load(() => {
+          const map = new maps.Map(container, {
+            center: new maps.LatLng(HEAD_OFFICE_COORDS.lat, HEAD_OFFICE_COORDS.lng),
             level: 4,
           });
 
-          const officeMarker = new window.kakao.maps.Marker({
+          const officeMarker = new maps.Marker({
             map,
-            position: new window.kakao.maps.LatLng(HEAD_OFFICE_COORDS.lat, HEAD_OFFICE_COORDS.lng),
+            position: new maps.LatLng(HEAD_OFFICE_COORDS.lat, HEAD_OFFICE_COORDS.lng),
           });
 
           officeMarker.setMap(map);
 
           if (currentPosition) {
-            const userMarker = new window.kakao.maps.Marker({
+            const userMarker = new maps.Marker({
               map,
-              position: new window.kakao.maps.LatLng(userCoords.lat, userCoords.lng),
+              position: new maps.LatLng(userCoords.lat, userCoords.lng),
             });
             userMarker.setMap(map);
           }

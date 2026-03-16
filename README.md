@@ -16,7 +16,7 @@ Run `npm run dev` to start the development server.
    - `MAIL_GMAIL_APP_PASSWORD`: Google App Password
    - `MAIL_RECEIVER_EMAILS`: comma-separated receiver emails
    - `VITE_CONTACT_RECEIVER_EMAIL`: fallback mailto target shown in the Contact page
-   - `VITE_NAVER_MAP_CLIENT_ID`: Naver Maps JavaScript API client id
+   - `VITE_NAVER_MAP_KEY_ID`: Naver Maps JavaScript API key id
    - `VITE_KAKAO_MAP_APP_KEY`: Kakao Maps JavaScript API app key
 
 Then submit the contact form. It calls `/api/contact` and sends mail through Gmail SMTP.
