@@ -176,8 +176,10 @@ export function Header() {
       {/* Mobile Menu Panel */}
       <div
         ref={mobileMenuRef}
-        className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${
-          isMobileMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+        className={`md:hidden transition-all duration-300 ease-in-out ${
+          isMobileMenuOpen
+            ? 'max-h-96 opacity-100 overflow-visible'
+            : 'max-h-0 opacity-0 overflow-hidden'
         }`}
       >
         <div className="bg-white/95 dark:bg-[#0f0f0f]/95 backdrop-blur-sm border-t border-gray-200 dark:border-gray-800 px-4 py-4">
@@ -234,7 +236,7 @@ export function Header() {
               </button>
 
               {isLangDropdownOpen && (
-                <div className="absolute right-0 bottom-full mb-2 w-32 bg-white dark:bg-[#1e1e1e] border border-gray-200 dark:border-gray-700 shadow-lg z-50">
+                <div className="absolute right-0 mt-2 w-32 bg-white dark:bg-[#1e1e1e] border border-gray-200 dark:border-gray-700 shadow-lg z-50">
                   {languages.map((lang) => (
                     <button
                       key={lang.code}

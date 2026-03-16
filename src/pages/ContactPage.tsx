@@ -1,9 +1,19 @@
 import { useEffect, useRef, useState, FormEvent } from 'react';
-import { Send, Sun, Moon, Building2, Store, Phone, Printer } from 'lucide-react';
+import {
+  Send,
+  Sun,
+  Moon,
+  Building2,
+  Store,
+  Phone,
+  Printer,
+  Globe,
+  ChevronDown,
+} from 'lucide-react';
 import { api } from '../services/api';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from '../utils/i18n';
-import { Footer } from '../components/Footer';
+// import { Footer } from '../components/Footer';
 import { useTheme } from '../utils/theme';
 
 const DEFAULT_SENDER_EMAIL = 'client.kgt.web@gmail.com';
@@ -16,8 +26,9 @@ type MapProvider = 'naver' | 'kakao';
 type SubmitStatus = 'idle' | 'success' | 'privacy_error' | 'fallback' | 'mail_config_error';
 type MapStatus = 'idle' | 'loading' | 'ready' | 'error';
 
-const HEAD_OFFICE_ADDRESS = '2F, 40, Hasinjungang-ro 54beon-gil (Jangnim-dong), Saha-gu, Busan, Republic of Korea';
-const BRANCH_ADDRESS = 'B-3321, Geumgang Penterium IX Tower, 27 Dongtancheomdansaneop 1-ro, Hwaseong-si, Gyeonggi-do, Republic of Korea';
+const HEAD_OFFICE_ADDRESS =
+  '2F, 40, Hasinjungang-ro 54beon-gil (Jangnim-dong), Saha-gu, Busan, Republic of Korea';
+
 const HEAD_OFFICE_COORDS = { lat: 35.0824, lng: 128.9667 };
 
 function loadScript(id: string, src: string): Promise<void> {
@@ -28,7 +39,11 @@ function loadScript(id: string, src: string): Promise<void> {
         resolve();
       } else {
         existing.addEventListener('load', () => resolve(), { once: true });
-        existing.addEventListener('error', () => reject(new Error(`Failed to load script: ${id}`)), { once: true });
+        existing.addEventListener(
+          'error',
+          () => reject(new Error(`Failed to load script: ${id}`)),
+          { once: true }
+        );
       }
       return;
     }
@@ -46,14 +61,18 @@ function loadScript(id: string, src: string): Promise<void> {
       },
       { once: true }
     );
-    script.addEventListener('error', () => reject(new Error(`Failed to load script: ${id}`)), { once: true });
+    script.addEventListener('error', () => reject(new Error(`Failed to load script: ${id}`)), {
+      once: true,
+    });
     document.head.appendChild(script);
   });
 }
 
 export function ContactPage() {
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t, currentLanguage, setLanguage, languages } = useTranslation();
+  const [isLangOpen, setIsLangOpen] = useState(false);
+  const currentLang = languages.find((l) => l.code === currentLanguage);
   const { isDark, toggleTheme } = useTheme();
   const mapRef = useRef<HTMLDivElement | null>(null);
 
@@ -65,7 +84,6 @@ export function ContactPage() {
     name: '',
     company: '',
     replyEmail: '',
-    senderEmail: '',
     subject: '',
     message: '',
     privacy: false,
@@ -74,6 +92,12 @@ export function ContactPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<SubmitStatus>('idle');
   const [fallbackMailto, setFallbackMailto] = useState('');
+
+  useEffect(() => {
+    const closeLang = () => setIsLangOpen(false);
+    document.addEventListener('click', closeLang);
+    return () => document.removeEventListener('click', closeLang);
+  }, []);
 
   useEffect(() => {
     if (!navigator.geolocation) return;
@@ -206,13 +230,12 @@ export function ContactPage() {
   const kakaoMapUrl = `https://map.kakao.com/link/map/KGT,${currentCoords.lat},${currentCoords.lng}`;
   const selectedMapUrl = mapProvider === 'naver' ? naverMapUrl : kakaoMapUrl;
 
-  const getMailtoUrl = (replyEmail: string, senderEmail: string) => {
+  const getMailtoUrl = (replyEmail: string) => {
     const subject = `[${formData.subject}] ${formData.name}`;
     const lines = [
       `Name: ${formData.name}`,
       `Company: ${formData.company || '-'}`,
       `Reply Email: ${replyEmail}`,
-      `Sender Email: ${senderEmail}`,
       '',
       formData.message,
     ];
@@ -234,7 +257,6 @@ export function ContactPage() {
     }
 
     const replyEmail = formData.replyEmail.trim();
-    const senderEmail = formData.senderEmail.trim() || DEFAULT_SENDER_EMAIL;
 
     setIsSubmitting(true);
     setSubmitStatus('idle');
@@ -245,7 +267,7 @@ export function ContactPage() {
         name: formData.name,
         company: formData.company,
         email: replyEmail,
-        senderEmail,
+        senderEmail: DEFAULT_SENDER_EMAIL,
         phone: '',
         subject: formData.subject,
         message: formData.message,
@@ -256,7 +278,6 @@ export function ContactPage() {
         name: '',
         company: '',
         replyEmail: '',
-        senderEmail: '',
         subject: '',
         message: '',
         privacy: false,
@@ -265,7 +286,7 @@ export function ContactPage() {
       setTimeout(() => setSubmitStatus('idle'), 3000);
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : '';
-      const mailtoUrl = getMailtoUrl(replyEmail, senderEmail);
+      const mailtoUrl = getMailtoUrl(replyEmail);
       setFallbackMailto(mailtoUrl);
 
       if (errorMessage.includes('Mail server is not configured')) {
@@ -278,21 +299,66 @@ export function ContactPage() {
     }
   };
 
-
   return (
     <div className="min-h-screen">
       <header className="fixed top-0 w-full z-50 bg-white/90 dark:bg-black/90 backdrop-blur-sm border-b border-gray-200 dark:border-gray-800 transition-colors duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-20">
-            <button onClick={() => navigate('/')} className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+            <button
+              onClick={() => navigate('/')}
+              className="flex items-center gap-2 hover:opacity-80 transition-opacity"
+            >
               <div className="relative w-12 h-12 flex items-center justify-center bg-transparent">
-                <span className="font-['Oswald'] font-bold text-3xl tracking-tighter text-blue-900 dark:text-white">KGT</span>
+                <span className="font-['Oswald'] font-bold text-3xl tracking-tighter text-blue-900 dark:text-white">
+                  KGT
+                </span>
                 <div className="absolute inset-0 border-2 border-[#FFD700] rounded-full opacity-30 rotate-12"></div>
               </div>
             </button>
-            <button onClick={toggleTheme} className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
-              {isDark ? <Sun className="w-5 h-5 text-gray-300" /> : <Moon className="w-5 h-5 text-gray-600" />}
-            </button>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={toggleTheme}
+                className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+              >
+                {isDark ? (
+                  <Sun className="w-5 h-5 text-gray-300" />
+                ) : (
+                  <Moon className="w-5 h-5 text-gray-600" />
+                )}
+              </button>
+              <div className="relative">
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setIsLangOpen(!isLangOpen);
+                  }}
+                  className="flex items-center text-sm font-medium text-gray-800 dark:text-gray-200 hover:text-[#FFD700] dark:hover:text-[#FFD700] transition-colors p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800"
+                >
+                  <Globe className="w-4 h-4 mr-1" />
+                  {currentLang?.code.toUpperCase()}
+                  <ChevronDown className="w-3 h-3 ml-0.5" />
+                </button>
+                {isLangOpen && (
+                  <div className="absolute right-0 mt-2 w-32 bg-white dark:bg-[#1e1e1e] border border-gray-200 dark:border-gray-700 shadow-lg z-50">
+                    {languages.map((lang) => (
+                      <button
+                        key={lang.code}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setLanguage(lang.code);
+                          setIsLangOpen(false);
+                        }}
+                        className={`block w-full text-left px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors ${
+                          currentLanguage === lang.code ? 'bg-gray-50 dark:bg-gray-900' : ''
+                        }`}
+                      >
+                        {lang.nativeName}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
         </div>
       </header>
@@ -301,22 +367,34 @@ export function ContactPage() {
         <section className="bg-[#1a1a1a] dark:bg-black text-white py-16 relative overflow-hidden">
           <div className="absolute top-0 right-0 w-64 h-64 bg-[#FFD700] opacity-10 rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2"></div>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <h1 className="text-4xl md:text-5xl font-['Oswald'] font-bold uppercase tracking-wide">{String(t('contactPage.hero.title'))}</h1>
-            <p className="mt-4 text-gray-400 max-w-2xl font-light text-lg">{String(t('contactPage.hero.subtitle'))}</p>
+            <h1 className="text-4xl md:text-5xl font-['Oswald'] font-bold uppercase tracking-wide">
+              {String(t('contactPage.hero.title'))}
+            </h1>
+            <p className="mt-4 text-gray-400 max-w-2xl font-light text-lg">
+              {String(t('contactPage.hero.subtitle'))}
+            </p>
           </div>
         </section>
 
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 bg-white dark:bg-[#0f0f0f] transition-colors duration-300">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
             <div className="order-1 lg:order-2 bg-white dark:bg-[#1e1e1e] p-8 md:p-10 shadow-xl border-t-4 border-[#FFD700] rounded-sm">
-              <h2 className="text-2xl font-['Oswald'] font-bold uppercase mb-2 text-gray-900 dark:text-white">{String(t('contactPage.form.title'))}</h2>
-              <p className="text-sm text-gray-500 dark:text-gray-400 mb-8">{String(t('contactPage.form.description'))}</p>
+              <h2 className="text-2xl font-['Oswald'] font-bold uppercase mb-2 text-gray-900 dark:text-white">
+                {String(t('contactPage.form.title'))}
+              </h2>
+              <p className="text-sm text-gray-500 dark:text-gray-400 mb-8">
+                {String(t('contactPage.form.description'))}
+              </p>
 
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                      {String(t('contactPage.form.yourName'))} <span className="text-[#FFD700]">*</span>
+                    <label
+                      htmlFor="name"
+                      className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                    >
+                      {String(t('contactPage.form.yourName'))}{' '}
+                      <span className="text-[#FFD700]">*</span>
                     </label>
                     <input
                       type="text"
@@ -330,7 +408,12 @@ export function ContactPage() {
                     />
                   </div>
                   <div>
-                    <label htmlFor="company" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{String(t('contactPage.form.companyName'))}</label>
+                    <label
+                      htmlFor="company"
+                      className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                    >
+                      {String(t('contactPage.form.companyName'))}
+                    </label>
                     <input
                       type="text"
                       id="company"
@@ -344,7 +427,10 @@ export function ContactPage() {
                 </div>
 
                 <div>
-                  <label htmlFor="replyEmail" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  <label
+                    htmlFor="replyEmail"
+                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                  >
                     {String(t('contact.form.email'))} <span className="text-[#FFD700]">*</span>
                   </label>
                   <input
@@ -357,27 +443,18 @@ export function ContactPage() {
                     placeholder={String(t('contact.form.emailPlaceholder'))}
                     className="w-full bg-gray-50 dark:bg-black border border-gray-300 dark:border-gray-700 rounded-sm px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#FFD700]"
                   />
+                  <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                    {String(t('contactPage.form.emailHint'))}
+                  </p>
                 </div>
 
                 <div>
-                  <label htmlFor="senderEmail" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    {String(t('contactPage.form.emailAddress'))}
-                  </label>
-                  <input
-                    type="email"
-                    id="senderEmail"
-                    name="senderEmail"
-                    value={formData.senderEmail}
-                    onChange={handleChange}
-                    placeholder={DEFAULT_SENDER_EMAIL}
-                    className="w-full bg-gray-50 dark:bg-black border border-gray-300 dark:border-gray-700 rounded-sm px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#FFD700]"
-                  />
-                  <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">{String(t('contactPage.form.emailHint'))} {DEFAULT_SENDER_EMAIL}</p>
-                </div>
-
-                <div>
-                  <label htmlFor="subject" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    {String(t('contactPage.form.subject'))} <span className="text-[#FFD700]">*</span>
+                  <label
+                    htmlFor="subject"
+                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                  >
+                    {String(t('contactPage.form.subject'))}{' '}
+                    <span className="text-[#FFD700]">*</span>
                   </label>
                   <input
                     type="text"
@@ -392,8 +469,12 @@ export function ContactPage() {
                 </div>
 
                 <div>
-                  <label htmlFor="message" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    {String(t('contactPage.form.message'))} <span className="text-[#FFD700]">*</span>
+                  <label
+                    htmlFor="message"
+                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                  >
+                    {String(t('contactPage.form.message'))}{' '}
+                    <span className="text-[#FFD700]">*</span>
                   </label>
                   <textarea
                     id="message"
@@ -420,10 +501,18 @@ export function ContactPage() {
                     />
                   </div>
                   <div className="ml-3 text-sm">
-                    <label htmlFor="privacy" className="font-medium text-gray-700 dark:text-gray-300">
-                      {String(t('contactPage.form.privacyPrefix'))} <span className="text-[#FFD700]">{String(t('contactPage.form.privacyPolicy'))}</span>
+                    <label
+                      htmlFor="privacy"
+                      className="font-medium text-gray-700 dark:text-gray-300"
+                    >
+                      {String(t('contactPage.form.privacyPrefix'))}
+                      <span className="text-[#FFD700]">
+                        {String(t('contactPage.form.privacyPolicy'))}
+                      </span>
+                      <span className="text-gray-500 dark:text-gray-400">
+                        {String(t('contactPage.form.privacyDescription'))}
+                      </span>
                     </label>
-                    <p className="text-gray-500 dark:text-gray-400">{String(t('contactPage.form.privacyDescription'))}</p>
                   </div>
                 </div>
 
@@ -432,16 +521,37 @@ export function ContactPage() {
                   disabled={isSubmitting}
                   className="w-full bg-[#1a1a1a] hover:bg-black text-white font-bold py-4 px-6 rounded-sm border-b-4 border-[#FFD700] uppercase tracking-widest text-sm flex items-center justify-center gap-2 disabled:opacity-50"
                 >
-                  <span>{isSubmitting ? String(t('contactPage.form.sending')) : String(t('contactPage.form.submit'))}</span>
+                  <span>
+                    {isSubmitting
+                      ? String(t('contactPage.form.sending'))
+                      : String(t('contactPage.form.submit'))}
+                  </span>
                   <Send className="w-4 h-4 text-[#FFD700]" />
                 </button>
 
-                {submitStatus === 'success' && <div className="p-4 bg-green-50 border-2 border-green-500 text-green-800 rounded-sm">{String(t('contactPage.form.success'))}</div>}
-                {submitStatus === 'privacy_error' && <div className="p-4 bg-red-50 border-2 border-red-500 text-red-800 rounded-sm">{String(t('contactPage.form.privacyError'))}</div>}
+                {submitStatus === 'success' && (
+                  <div className="p-4 bg-green-50 border-2 border-green-500 text-green-800 rounded-sm">
+                    {String(t('contactPage.form.success'))}
+                  </div>
+                )}
+                {submitStatus === 'privacy_error' && (
+                  <div className="p-4 bg-red-50 border-2 border-red-500 text-red-800 rounded-sm">
+                    {String(t('contactPage.form.privacyError'))}
+                  </div>
+                )}
                 {(submitStatus === 'fallback' || submitStatus === 'mail_config_error') && (
                   <div className="p-4 bg-yellow-50 border-2 border-yellow-500 text-yellow-900 rounded-sm space-y-2">
-                    <p>{submitStatus === 'fallback' ? String(t('contactPage.form.fallback')) : String(t('contactPage.form.mailConfigError'))}</p>
-                    <a href={fallbackMailto || `mailto:${RECEIVER_EMAIL}`} className="underline font-semibold break-all">{RECEIVER_EMAIL}</a>
+                    <p>
+                      {submitStatus === 'fallback'
+                        ? String(t('contactPage.form.fallback'))
+                        : String(t('contactPage.form.mailConfigError'))}
+                    </p>
+                    <a
+                      href={fallbackMailto || `mailto:${RECEIVER_EMAIL}`}
+                      className="underline font-semibold break-all"
+                    >
+                      {RECEIVER_EMAIL}
+                    </a>
                   </div>
                 )}
               </form>
@@ -449,7 +559,9 @@ export function ContactPage() {
 
             <div className="order-2 lg:order-1 space-y-12">
               <div>
-                <h2 className="text-2xl font-['Oswald'] font-bold uppercase mb-8 border-l-4 border-[#FFD700] pl-4 text-gray-900 dark:text-white">{String(t('contactPage.locations.title'))}</h2>
+                <h2 className="text-2xl font-['Oswald'] font-bold uppercase mb-8 border-l-4 border-[#FFD700] pl-4 text-gray-900 dark:text-white">
+                  {String(t('contactPage.locations.title'))}
+                </h2>
 
                 <div className="mb-10 group">
                   <h3 className="text-xl font-bold mb-3 flex items-center gap-2 group-hover:text-[#FFD700] transition-colors dark:text-white">
@@ -457,10 +569,14 @@ export function ContactPage() {
                     {String(t('contactPage.locations.headOffice'))}
                   </h3>
                   <address className="not-italic text-gray-600 dark:text-gray-400 pl-8 space-y-2 border-l border-gray-200 dark:border-gray-700 ml-3">
-                    <p>{HEAD_OFFICE_ADDRESS}</p>
+                    <p>{String(t('contactPage.locations.headOfficeAddress'))}</p>
                     <div className="pt-2 flex items-center gap-4 text-sm font-medium flex-wrap">
-                      <span className="flex items-center gap-1"><Phone className="w-3.5 h-3.5" /> 051-265-7481</span>
-                      <span className="flex items-center gap-1"><Printer className="w-3.5 h-3.5" /> 051-266-7481</span>
+                      <span className="flex items-center gap-1">
+                        <Phone className="w-3.5 h-3.5" /> 051-265-7481
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <Printer className="w-3.5 h-3.5" /> 051-266-7481
+                      </span>
                     </div>
                   </address>
                 </div>
@@ -471,10 +587,14 @@ export function ContactPage() {
                     {String(t('contactPage.locations.branchOffice'))}
                   </h3>
                   <address className="not-italic text-gray-600 dark:text-gray-400 pl-8 space-y-2 border-l border-gray-200 dark:border-gray-700 ml-3">
-                    <p>{BRANCH_ADDRESS}</p>
+                    <p>{String(t('contactPage.locations.branchOfficeAddress'))}</p>
                     <div className="pt-2 flex items-center gap-4 text-sm font-medium flex-wrap">
-                      <span className="flex items-center gap-1"><Phone className="w-3.5 h-3.5" /> 051-265-7481</span>
-                      <span className="flex items-center gap-1"><Printer className="w-3.5 h-3.5" /> 051-266-7481</span>
+                      <span className="flex items-center gap-1">
+                        <Phone className="w-3.5 h-3.5" /> 051-265-7481
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <Printer className="w-3.5 h-3.5" /> 051-266-7481
+                      </span>
                     </div>
                   </address>
                 </div>
@@ -521,8 +641,6 @@ export function ContactPage() {
           </div>
         </section>
       </main>
-
-
     </div>
   );
 }

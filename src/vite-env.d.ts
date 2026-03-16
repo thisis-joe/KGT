@@ -12,6 +12,6 @@ interface ImportMeta {
 }
 
 interface Window {
-  naver?: any;
-  kakao?: any;
+  naver?: { maps: Record<string, unknown> };
+  kakao?: { maps: Record<string, unknown> & { load: (cb: () => void) => void } };
 }

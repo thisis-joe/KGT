@@ -2,36 +2,48 @@ import { FormEvent, useState } from 'react';
 import { Building2, Store, Phone, Printer } from 'lucide-react';
 import { useTranslation } from '../utils/i18n';
 import { features } from '../config/features';
+import { api } from '../services/api';
 
 type PolicyType = 'privacy' | 'terms' | null;
+type SuggestionStatus = 'idle' | 'sending' | 'success' | 'error';
 
-const DEVELOPER_EMAIL = 'wdg0434@gmail.com';
+const DEFAULT_SENDER_EMAIL = 'client.kgt.web@gmail.com';
 const NAVER_STORE_URL = 'https://smartstore.naver.com';
 
 export function Footer() {
   const { t } = useTranslation();
   const [activePolicy, setActivePolicy] = useState<PolicyType>(null);
   const [isSuggestionOpen, setIsSuggestionOpen] = useState(false);
+  const [suggestionStatus, setSuggestionStatus] = useState<SuggestionStatus>('idle');
   const [suggestion, setSuggestion] = useState({
     name: '',
     email: '',
     message: '',
   });
 
-  const handleSuggestionSubmit = (e: FormEvent) => {
+  const handleSuggestionSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    setSuggestionStatus('sending');
 
-    const subject = `[Feature Suggestion] ${suggestion.name || 'Anonymous'}`;
-    const body = [
-      `Name: ${suggestion.name || '-'}`,
-      `Email: ${suggestion.email || '-'}`,
-      '',
-      suggestion.message,
-    ].join('\n');
+    try {
+      await api.contact.submit({
+        name: suggestion.name || 'Anonymous',
+        email: suggestion.email || DEFAULT_SENDER_EMAIL,
+        senderEmail: DEFAULT_SENDER_EMAIL,
+        subject: `[Feature Suggestion] ${suggestion.name || 'Anonymous'}`,
+        message: suggestion.message,
+      });
 
-    window.location.href = `mailto:${DEVELOPER_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    setIsSuggestionOpen(false);
-    setSuggestion({ name: '', email: '', message: '' });
+      setSuggestionStatus('success');
+      setSuggestion({ name: '', email: '', message: '' });
+      setTimeout(() => {
+        setSuggestionStatus('idle');
+        setIsSuggestionOpen(false);
+      }, 2000);
+    } catch {
+      setSuggestionStatus('error');
+      setTimeout(() => setSuggestionStatus('idle'), 3000);
+    }
   };
 
   return (
@@ -44,11 +56,11 @@ export function Footer() {
                 <div className="w-8 h-8 bg-[#FFD700] flex items-center justify-center rounded-sm">
                   <span className="font-['Oswald'] font-bold text-black text-sm">KGT</span>
                 </div>
-                <span className="font-['Oswald'] font-bold text-xl text-white tracking-tighter">GLOBAL</span>
+                <span className="font-['Oswald'] font-bold text-xl text-white tracking-tighter">
+                  GLOBAL
+                </span>
               </div>
-              <p className="text-sm leading-relaxed">
-                {String(t('footer.description'))}
-              </p>
+              <p className="text-sm leading-relaxed">{String(t('footer.description'))}</p>
 
               {/* Reserved for future official social channels */}
               {/**
@@ -67,17 +79,19 @@ export function Footer() {
             </div>
 
             <div>
-              <h4 className="text-white font-bold uppercase tracking-wider mb-6 text-sm">{String(t('footer.quickAccess'))}</h4>
+              <h4 className="text-white font-bold uppercase tracking-wider mb-6 text-sm">
+                {String(t('footer.quickAccess'))}
+              </h4>
               <div className="space-y-3 text-sm">
                 {features.naverStore && (
-                <a
-                  href={NAVER_STORE_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center px-3 py-2 border border-[#2DB400] text-[#2DB400] hover:bg-[#2DB400] hover:text-white transition-colors rounded-sm"
-                >
-                  {String(t('footer.naverStore'))}
-                </a>
+                  <a
+                    href={NAVER_STORE_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center px-3 py-2 border border-[#2DB400] text-[#2DB400] hover:bg-[#2DB400] hover:text-white transition-colors rounded-sm"
+                  >
+                    {String(t('footer.naverStore'))}
+                  </a>
                 )}
                 <div>
                   <button
@@ -92,7 +106,9 @@ export function Footer() {
             </div>
 
             <div>
-              <h4 className="text-white font-bold uppercase tracking-wider mb-6 text-sm">{String(t('footer.contactTitle'))}</h4>
+              <h4 className="text-white font-bold uppercase tracking-wider mb-6 text-sm">
+                {String(t('footer.contactTitle'))}
+              </h4>
               <ul className="space-y-4 text-sm">
                 <li className="flex items-start">
                   <Building2 className="w-4 h-4 mr-2 mt-0.5 text-[#FFD700] flex-shrink-0" />
@@ -104,7 +120,9 @@ export function Footer() {
                 <li className="flex items-start">
                   <Store className="w-4 h-4 mr-2 mt-0.5 text-[#FFD700] flex-shrink-0" />
                   <div>
-                    <span className="text-white font-medium">{String(t('footer.branchOffice'))}</span>
+                    <span className="text-white font-medium">
+                      {String(t('footer.branchOffice'))}
+                    </span>
                     <p className="mt-1">{String(t('footer.branchOfficeAddress'))}</p>
                   </div>
                 </li>
@@ -123,10 +141,18 @@ export function Footer() {
           <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center text-xs">
             <p>{String(t('footer.copyright'))}</p>
             <div className="flex space-x-6 mt-4 md:mt-0">
-              <button type="button" onClick={() => setActivePolicy('privacy')} className="hover:text-white transition-colors">
+              <button
+                type="button"
+                onClick={() => setActivePolicy('privacy')}
+                className="hover:text-white transition-colors"
+              >
                 {String(t('footer.privacyPolicy'))}
               </button>
-              <button type="button" onClick={() => setActivePolicy('terms')} className="hover:text-white transition-colors">
+              <button
+                type="button"
+                onClick={() => setActivePolicy('terms')}
+                className="hover:text-white transition-colors"
+              >
                 {String(t('footer.termsOfService'))}
               </button>
             </div>
@@ -138,8 +164,18 @@ export function Footer() {
         <div className="fixed inset-0 z-[100] bg-black/60 flex items-center justify-center p-4">
           <div className="w-full max-w-2xl bg-white text-gray-900 rounded-sm shadow-2xl">
             <div className="flex items-center justify-between border-b px-6 py-4">
-              <h3 className="font-bold text-lg">{activePolicy === 'privacy' ? String(t('footer.privacyPolicy')) : String(t('footer.termsOfService'))}</h3>
-              <button type="button" onClick={() => setActivePolicy(null)} className="text-gray-500 hover:text-black">{String(t('footer.close'))}</button>
+              <h3 className="font-bold text-lg">
+                {activePolicy === 'privacy'
+                  ? String(t('footer.privacyPolicy'))
+                  : String(t('footer.termsOfService'))}
+              </h3>
+              <button
+                type="button"
+                onClick={() => setActivePolicy(null)}
+                className="text-gray-500 hover:text-black"
+              >
+                {String(t('footer.close'))}
+              </button>
             </div>
             <div className="p-6 space-y-4 text-sm leading-relaxed max-h-[65vh] overflow-y-auto">
               {activePolicy === 'privacy' ? (
@@ -165,31 +201,45 @@ export function Footer() {
           <div className="w-full max-w-xl bg-white text-gray-900 rounded-sm shadow-2xl">
             <div className="flex items-center justify-between border-b px-6 py-4">
               <h3 className="font-bold text-lg">{String(t('footer.featureSuggestion'))}</h3>
-              <button type="button" onClick={() => setIsSuggestionOpen(false)} className="text-gray-500 hover:text-black">{String(t('footer.close'))}</button>
+              <button
+                type="button"
+                onClick={() => setIsSuggestionOpen(false)}
+                className="text-gray-500 hover:text-black"
+              >
+                {String(t('footer.close'))}
+              </button>
             </div>
             <form onSubmit={handleSuggestionSubmit} className="p-6 space-y-4">
               <div>
-                <label className="block text-sm font-medium mb-1" htmlFor="suggestion-name">{String(t('footer.suggestionName'))}</label>
+                <label className="block text-sm font-medium mb-1" htmlFor="suggestion-name">
+                  {String(t('footer.suggestionName'))}
+                </label>
                 <input
                   id="suggestion-name"
                   type="text"
                   value={suggestion.name}
                   onChange={(e) => setSuggestion((prev) => ({ ...prev, name: e.target.value }))}
+                  placeholder={String(t('footer.suggestionNamePlaceholder'))}
                   className="w-full border border-gray-300 rounded-sm px-3 py-2"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium mb-1" htmlFor="suggestion-email">{String(t('footer.suggestionEmail'))}</label>
+                <label className="block text-sm font-medium mb-1" htmlFor="suggestion-email">
+                  {String(t('footer.suggestionEmail'))}
+                </label>
                 <input
                   id="suggestion-email"
                   type="email"
                   value={suggestion.email}
                   onChange={(e) => setSuggestion((prev) => ({ ...prev, email: e.target.value }))}
+                  placeholder={String(t('footer.suggestionEmailPlaceholder'))}
                   className="w-full border border-gray-300 rounded-sm px-3 py-2"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium mb-1" htmlFor="suggestion-message">{String(t('footer.suggestionLabel'))}</label>
+                <label className="block text-sm font-medium mb-1" htmlFor="suggestion-message">
+                  {String(t('footer.suggestionLabel'))}
+                </label>
                 <textarea
                   id="suggestion-message"
                   rows={5}
@@ -199,9 +249,21 @@ export function Footer() {
                   className="w-full border border-gray-300 rounded-sm px-3 py-2"
                 />
               </div>
-              <button type="submit" className="bg-black text-white px-4 py-2 rounded-sm hover:bg-[#222]">
-                {String(t('footer.sendToDeveloper'))}
+              <button
+                type="submit"
+                disabled={suggestionStatus === 'sending'}
+                className="bg-black text-white px-4 py-2 rounded-sm hover:bg-[#222] disabled:opacity-50"
+              >
+                {suggestionStatus === 'sending' ? '...' : String(t('footer.sendToDeveloper'))}
               </button>
+              {suggestionStatus === 'success' && (
+                <p className="text-green-600 text-sm font-medium">✓ Sent successfully</p>
+              )}
+              {suggestionStatus === 'error' && (
+                <p className="text-red-600 text-sm font-medium">
+                  Failed to send. Please try again.
+                </p>
+              )}
             </form>
           </div>
         </div>

@@ -1,6 +1,5 @@
 import { useTranslation } from '../utils/i18n';
 
-
 export function CompanyOverview() {
   const { t } = useTranslation();
 
@@ -23,11 +22,14 @@ export function CompanyOverview() {
   ];
 
   return (
-    <section id="company" className="py-20 bg-white dark:bg-[#0f0f0f] transition-colors duration-300">
+    <section
+      id="company"
+      className="py-20 bg-white dark:bg-[#0f0f0f] transition-colors duration-300"
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center mb-16">
-          <h2 className="text-3xl font-['Oswald'] font-bold mb-4 uppercase tracking-wide text-gray-900 dark:text-white">
+          <h2 className="text-3xl font-['Oswald'] font-bold mb-4 uppercase tracking-wide text-gray-900 dark:text-white break-keep">
             {String(t('coreValues.sectionTitle'))}
           </h2>
           <div className="w-16 h-1 bg-[#FFD700] mx-auto"></div>
