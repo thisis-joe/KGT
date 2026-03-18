@@ -5,7 +5,7 @@ export function Hero() {
   const { t } = useTranslation();
 
   return (
-    <section className="relative h-screen flex items-center overflow-hidden">
+    <section className="relative min-h-[75vh] md:h-screen flex items-center overflow-hidden">
       {/* Background Image with Overlay */}
       <div
         className="absolute inset-0 bg-cover bg-center"

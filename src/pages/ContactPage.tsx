@@ -120,113 +120,127 @@ export function ContactPage() {
     const container = mapRef.current;
     if (!container) return;
 
-    const userCoords = currentPosition || HEAD_OFFICE_COORDS;
+    // rAF ensures the container has computed dimensions before the SDK renders into it.
+    let cancelled = false;
+    const raf = requestAnimationFrame(() => {
+      if (cancelled) return;
+      initMap(container);
+    });
 
-    const renderNaverMap = async () => {
-      if (!NAVER_MAP_KEY_ID) {
-        setMapStatus('error');
-        return;
-      }
+    function initMap(el: HTMLDivElement) {
+      const userCoords = currentPosition || HEAD_OFFICE_COORDS;
 
-      setMapStatus('loading');
-
-      try {
-        await loadScript(
-          'naver-map-sdk',
-          `https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${NAVER_MAP_KEY_ID}`
-        );
-
-        if (!window.naver?.maps) {
+      const renderNaverMap = async () => {
+        if (!NAVER_MAP_KEY_ID) {
           setMapStatus('error');
           return;
         }
 
-        const { maps } = window.naver;
+        setMapStatus('loading');
 
-        const map = new maps.Map(container, {
-          center: new maps.LatLng(HEAD_OFFICE_COORDS.lat, HEAD_OFFICE_COORDS.lng),
-          zoom: 13,
-        });
+        try {
+          await loadScript(
+            'naver-map-sdk',
+            `https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${NAVER_MAP_KEY_ID}`
+          );
 
-        new maps.Marker({
-          position: new maps.LatLng(HEAD_OFFICE_COORDS.lat, HEAD_OFFICE_COORDS.lng),
-          map,
-          title: 'KGT Head Office / R&D Center',
-        });
+          if (!window.naver?.maps) {
+            setMapStatus('error');
+            return;
+          }
 
-        if (currentPosition) {
-          new maps.Marker({
-            position: new maps.LatLng(userCoords.lat, userCoords.lng),
-            map,
-            title: 'Current Location',
-            icon: {
-              content:
-                '<div style="width:12px;height:12px;border-radius:999px;background:#03C75A;border:2px solid white;box-shadow:0 0 0 2px #03C75A66"></div>',
-              anchor: new maps.Point(6, 6),
-            },
-          });
-        }
+          const { maps } = window.naver;
 
-        setMapStatus('ready');
-      } catch {
-        setMapStatus('error');
-      }
-    };
-
-    const renderKakaoMap = async () => {
-      if (!KAKAO_MAP_APP_KEY) {
-        setMapStatus('error');
-        return;
-      }
-
-      setMapStatus('loading');
-
-      try {
-        await loadScript(
-          'kakao-map-sdk',
-          `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${KAKAO_MAP_APP_KEY}&autoload=false`
-        );
-
-        if (!window.kakao?.maps) {
-          setMapStatus('error');
-          return;
-        }
-
-        const { maps } = window.kakao;
-
-        maps.load(() => {
-          const map = new maps.Map(container, {
+          const map = new maps.Map(el, {
             center: new maps.LatLng(HEAD_OFFICE_COORDS.lat, HEAD_OFFICE_COORDS.lng),
-            level: 4,
+            zoom: 13,
           });
 
-          const officeMarker = new maps.Marker({
-            map,
+          new maps.Marker({
             position: new maps.LatLng(HEAD_OFFICE_COORDS.lat, HEAD_OFFICE_COORDS.lng),
+            map,
+            title: 'KGT Head Office / R&D Center',
           });
-
-          officeMarker.setMap(map);
 
           if (currentPosition) {
-            const userMarker = new maps.Marker({
-              map,
+            new maps.Marker({
               position: new maps.LatLng(userCoords.lat, userCoords.lng),
+              map,
+              title: 'Current Location',
+              icon: {
+                content:
+                  '<div style="width:12px;height:12px;border-radius:999px;background:#03C75A;border:2px solid white;box-shadow:0 0 0 2px #03C75A66"></div>',
+                anchor: new maps.Point(6, 6),
+              },
             });
-            userMarker.setMap(map);
           }
 
           setMapStatus('ready');
-        });
-      } catch {
-        setMapStatus('error');
-      }
-    };
+        } catch {
+          setMapStatus('error');
+        }
+      };
 
-    if (mapProvider === 'naver') {
-      renderNaverMap();
-    } else {
-      renderKakaoMap();
+      const renderKakaoMap = async () => {
+        if (!KAKAO_MAP_APP_KEY) {
+          setMapStatus('error');
+          return;
+        }
+
+        setMapStatus('loading');
+
+        try {
+          await loadScript(
+            'kakao-map-sdk',
+            `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${KAKAO_MAP_APP_KEY}&autoload=false`
+          );
+
+          if (!window.kakao?.maps) {
+            setMapStatus('error');
+            return;
+          }
+
+          const { maps } = window.kakao;
+
+          maps.load(() => {
+            const map = new maps.Map(el, {
+              center: new maps.LatLng(HEAD_OFFICE_COORDS.lat, HEAD_OFFICE_COORDS.lng),
+              level: 4,
+            });
+
+            const officeMarker = new maps.Marker({
+              map,
+              position: new maps.LatLng(HEAD_OFFICE_COORDS.lat, HEAD_OFFICE_COORDS.lng),
+            });
+
+            officeMarker.setMap(map);
+
+            if (currentPosition) {
+              const userMarker = new maps.Marker({
+                map,
+                position: new maps.LatLng(userCoords.lat, userCoords.lng),
+              });
+              userMarker.setMap(map);
+            }
+
+            setMapStatus('ready');
+          });
+        } catch {
+          setMapStatus('error');
+        }
+      };
+
+      if (mapProvider === 'naver') {
+        renderNaverMap();
+      } else {
+        renderKakaoMap();
+      }
     }
+
+    return () => {
+      cancelled = true;
+      cancelAnimationFrame(raf);
+    };
   }, [mapProvider, currentPosition]);
 
   const currentCoords = currentPosition || HEAD_OFFICE_COORDS;

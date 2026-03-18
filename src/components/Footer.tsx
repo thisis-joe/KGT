@@ -139,7 +139,10 @@ export function Footer() {
           </div>
 
           <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center text-xs">
-            <p>{String(t('footer.copyright'))}</p>
+            <div className="flex flex-col items-center md:items-start gap-1">
+              <p>{String(t('footer.copyright'))}</p>
+              <p>사업자등록번호 734-81-02075 | 대표자 주창석</p>
+            </div>
             <div className="flex space-x-6 mt-4 md:mt-0">
               <button
                 type="button"

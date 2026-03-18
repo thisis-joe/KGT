@@ -5,7 +5,7 @@ export default {
     business: 'Negosyo',
     store: 'Tindahan',
     support: 'Suporta',
-    contact: 'Makipag-ugnayan',
+    contact: 'Kontak',
     storeNotice:
       'Our online store is currently under preparation.\nFor inquiries, please use the "Contact" button in the top right corner.',
   },
