@@ -11,7 +11,7 @@ const DEFAULT_SENDER_EMAIL = 'client.kgt.web@gmail.com';
 const NAVER_STORE_URL = 'https://smartstore.naver.com';
 
 export function Footer() {
-  const { t } = useTranslation();
+  const { t, currentLanguage } = useTranslation();
   const [activePolicy, setActivePolicy] = useState<PolicyType>(null);
   const [isSuggestionOpen, setIsSuggestionOpen] = useState(false);
   const [suggestionStatus, setSuggestionStatus] = useState<SuggestionStatus>('idle');
@@ -248,7 +248,17 @@ export function Footer() {
                   rows={5}
                   required
                   value={suggestion.message}
-                  onChange={(e) => setSuggestion((prev) => ({ ...prev, message: e.target.value }))}
+                  onInvalid={(e) =>
+                    (e.target as HTMLTextAreaElement).setCustomValidity(
+                      currentLanguage === 'ko'
+                        ? '이 항목을 입력해주세요.'
+                        : 'Please fill out this field.'
+                    )
+                  }
+                  onChange={(e) => {
+                    e.target.setCustomValidity('');
+                    setSuggestion((prev) => ({ ...prev, message: e.target.value }));
+                  }}
                   className="w-full border border-gray-300 rounded-sm px-3 py-2"
                 />
               </div>

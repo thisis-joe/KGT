@@ -260,7 +260,19 @@ export function ContactPage() {
     return `mailto:${RECEIVER_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(lines.join('\n'))}`;
   };
 
+  const requiredMsg =
+    currentLanguage === 'ko' ? '이 항목을 입력해주세요.' : 'Please fill out this field.';
+  const privacyMsg =
+    currentLanguage === 'ko'
+      ? '개인정보처리방침에 동의해주세요.'
+      : 'Please agree to the Privacy Policy.';
+
+  const onInvalid = (e: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    (e.target as HTMLInputElement).setCustomValidity(requiredMsg);
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    (e.target as HTMLInputElement).setCustomValidity('');
     const target = e.target;
     const value = target.type === 'checkbox' ? (target as HTMLInputElement).checked : target.value;
     setFormData((prev) => ({ ...prev, [target.name]: value }));
@@ -274,7 +286,7 @@ export function ContactPage() {
       return;
     }
 
-    const replyEmail = formData.replyEmail.trim();
+    const replyEmail = formData.replyEmail.trim() || DEFAULT_SENDER_EMAIL;
 
     setIsSubmitting(true);
     setSubmitStatus('idle');
@@ -420,6 +432,7 @@ export function ContactPage() {
                       name="name"
                       required
                       value={formData.name}
+                      onInvalid={onInvalid}
                       onChange={handleChange}
                       placeholder={String(t('contact.form.namePlaceholder'))}
                       className="w-full bg-gray-50 dark:bg-black border border-gray-300 dark:border-gray-700 rounded-sm px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#FFD700]"
@@ -449,13 +462,12 @@ export function ContactPage() {
                     htmlFor="replyEmail"
                     className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
                   >
-                    {String(t('contact.form.email'))} <span className="text-[#FFD700]">*</span>
+                    {String(t('contact.form.email'))}
                   </label>
                   <input
                     type="email"
                     id="replyEmail"
                     name="replyEmail"
-                    required
                     value={formData.replyEmail}
                     onChange={handleChange}
                     placeholder={String(t('contact.form.emailPlaceholder'))}
@@ -480,6 +492,7 @@ export function ContactPage() {
                     name="subject"
                     required
                     value={formData.subject}
+                    onInvalid={onInvalid}
                     onChange={handleChange}
                     placeholder={String(t('contact.form.subjectPlaceholder'))}
                     className="w-full bg-gray-50 dark:bg-black border border-gray-300 dark:border-gray-700 rounded-sm px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#FFD700]"
@@ -500,6 +513,7 @@ export function ContactPage() {
                     required
                     rows={4}
                     value={formData.message}
+                    onInvalid={onInvalid}
                     onChange={handleChange}
                     placeholder={String(t('contact.form.messagePlaceholder'))}
                     className="w-full bg-gray-50 dark:bg-black border border-gray-300 dark:border-gray-700 rounded-sm px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#FFD700] resize-none"
@@ -514,6 +528,9 @@ export function ContactPage() {
                       name="privacy"
                       required
                       checked={formData.privacy}
+                      onInvalid={(e) =>
+                        (e.target as HTMLInputElement).setCustomValidity(privacyMsg)
+                      }
                       onChange={handleChange}
                       className="focus:ring-[#FFD700] h-4 w-4 text-[#FFD700] border-gray-300 rounded"
                     />
