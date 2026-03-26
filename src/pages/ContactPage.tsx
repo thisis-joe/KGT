@@ -26,9 +26,6 @@ type MapProvider = 'naver' | 'kakao';
 type SubmitStatus = 'idle' | 'success' | 'privacy_error' | 'fallback' | 'mail_config_error';
 type MapStatus = 'idle' | 'loading' | 'ready' | 'error';
 
-const HEAD_OFFICE_ADDRESS =
-  '2F, 40, Hasinjungang-ro 54beon-gil (Jangnim-dong), Saha-gu, Busan, Republic of Korea';
-
 const HEAD_OFFICE_COORDS = { lat: 35.0824, lng: 128.9667 };
 
 function loadScript(id: string, src: string): Promise<void> {
@@ -75,6 +72,8 @@ export function ContactPage() {
   const currentLang = languages.find((l) => l.code === currentLanguage);
   const { isDark, toggleTheme } = useTheme();
   const mapRef = useRef<HTMLDivElement | null>(null);
+  const mapCleanupRef = useRef<(() => void) | null>(null);
+  const mapRenderIdRef = useRef(0);
 
   const [mapProvider, setMapProvider] = useState<MapProvider>('naver');
   const [mapStatus, setMapStatus] = useState<MapStatus>('idle');
@@ -120,7 +119,16 @@ export function ContactPage() {
     const container = mapRef.current;
     if (!container) return;
 
-    // rAF ensures the container has computed dimensions before the SDK renders into it.
+    mapRenderIdRef.current += 1;
+    const renderId = mapRenderIdRef.current;
+    setMapStatus('loading');
+
+    if (mapCleanupRef.current) {
+      mapCleanupRef.current();
+      mapCleanupRef.current = null;
+    }
+    container.innerHTML = '';
+
     let cancelled = false;
     const raf = requestAnimationFrame(() => {
       if (cancelled) return;
@@ -129,14 +137,25 @@ export function ContactPage() {
 
     function initMap(el: HTMLDivElement) {
       const userCoords = currentPosition || HEAD_OFFICE_COORDS;
-
-      const renderNaverMap = async () => {
-        if (!NAVER_MAP_KEY_ID) {
-          setMapStatus('error');
+      const isStale = () => cancelled || mapRenderIdRef.current !== renderId;
+      const clearMarker = (marker: unknown) => {
+        if (typeof marker !== 'object' || marker === null || !('setMap' in marker)) {
           return;
         }
 
-        setMapStatus('loading');
+        const markerWithSetMap = marker as { setMap?: (map: null) => void };
+        if (typeof markerWithSetMap.setMap === 'function') {
+          markerWithSetMap.setMap(null);
+        }
+      };
+
+      const renderNaverMap = async () => {
+        if (!NAVER_MAP_KEY_ID) {
+          if (!isStale()) {
+            setMapStatus('error');
+          }
+          return;
+        }
 
         try {
           await loadScript(
@@ -144,26 +163,34 @@ export function ContactPage() {
             `https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${NAVER_MAP_KEY_ID}`
           );
 
+          if (isStale()) {
+            return;
+          }
+
           if (!window.naver?.maps) {
-            setMapStatus('error');
+            if (!isStale()) {
+              setMapStatus('error');
+            }
             return;
           }
 
           const { maps } = window.naver;
+          const cleanupList: Array<() => void> = [];
 
           const map = new maps.Map(el, {
             center: new maps.LatLng(HEAD_OFFICE_COORDS.lat, HEAD_OFFICE_COORDS.lng),
             zoom: 13,
           });
 
-          new maps.Marker({
+          const officeMarker = new maps.Marker({
             position: new maps.LatLng(HEAD_OFFICE_COORDS.lat, HEAD_OFFICE_COORDS.lng),
             map,
             title: 'KGT Head Office / R&D Center',
           });
+          cleanupList.push(() => clearMarker(officeMarker));
 
           if (currentPosition) {
-            new maps.Marker({
+            const userMarker = new maps.Marker({
               position: new maps.LatLng(userCoords.lat, userCoords.lng),
               map,
               title: 'Current Location',
@@ -173,21 +200,31 @@ export function ContactPage() {
                 anchor: new maps.Point(6, 6),
               },
             });
+            cleanupList.push(() => clearMarker(userMarker));
           }
 
-          setMapStatus('ready');
+          mapCleanupRef.current = () => {
+            cleanupList.forEach((cleanup) => cleanup());
+            el.innerHTML = '';
+          };
+
+          if (!isStale()) {
+            setMapStatus('ready');
+          }
         } catch {
-          setMapStatus('error');
+          if (!isStale()) {
+            setMapStatus('error');
+          }
         }
       };
 
       const renderKakaoMap = async () => {
         if (!KAKAO_MAP_APP_KEY) {
-          setMapStatus('error');
+          if (!isStale()) {
+            setMapStatus('error');
+          }
           return;
         }
-
-        setMapStatus('loading');
 
         try {
           await loadScript(
@@ -195,18 +232,30 @@ export function ContactPage() {
             `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${KAKAO_MAP_APP_KEY}&autoload=false`
           );
 
+          if (isStale()) {
+            return;
+          }
+
           if (!window.kakao?.maps) {
-            setMapStatus('error');
+            if (!isStale()) {
+              setMapStatus('error');
+            }
             return;
           }
 
           const { maps } = window.kakao;
 
           maps.load(() => {
+            if (isStale()) {
+              return;
+            }
+
             const map = new maps.Map(el, {
               center: new maps.LatLng(HEAD_OFFICE_COORDS.lat, HEAD_OFFICE_COORDS.lng),
               level: 4,
             });
+
+            const cleanupList: Array<() => void> = [];
 
             const officeMarker = new maps.Marker({
               map,
@@ -214,6 +263,7 @@ export function ContactPage() {
             });
 
             officeMarker.setMap(map);
+            cleanupList.push(() => clearMarker(officeMarker));
 
             if (currentPosition) {
               const userMarker = new maps.Marker({
@@ -221,12 +271,22 @@ export function ContactPage() {
                 position: new maps.LatLng(userCoords.lat, userCoords.lng),
               });
               userMarker.setMap(map);
+              cleanupList.push(() => clearMarker(userMarker));
             }
 
-            setMapStatus('ready');
+            mapCleanupRef.current = () => {
+              cleanupList.forEach((cleanup) => cleanup());
+              el.innerHTML = '';
+            };
+
+            if (!isStale()) {
+              setMapStatus('ready');
+            }
           });
         } catch {
-          setMapStatus('error');
+          if (!isStale()) {
+            setMapStatus('error');
+          }
         }
       };
 
@@ -240,13 +300,13 @@ export function ContactPage() {
     return () => {
       cancelled = true;
       cancelAnimationFrame(raf);
+
+      if (mapCleanupRef.current) {
+        mapCleanupRef.current();
+        mapCleanupRef.current = null;
+      }
     };
   }, [mapProvider, currentPosition]);
-
-  const currentCoords = currentPosition || HEAD_OFFICE_COORDS;
-  const naverMapUrl = `https://map.naver.com/v5/search/${encodeURIComponent(HEAD_OFFICE_ADDRESS)}`;
-  const kakaoMapUrl = `https://map.kakao.com/link/map/KGT,${currentCoords.lat},${currentCoords.lng}`;
-  const selectedMapUrl = mapProvider === 'naver' ? naverMapUrl : kakaoMapUrl;
 
   const getMailtoUrl = (replyEmail: string) => {
     const subject = `[${formData.subject}] ${formData.name}`;
@@ -658,19 +718,10 @@ export function ContactPage() {
                 {mapStatus !== 'ready' && (
                   <div className="absolute inset-0 bg-black/40 text-white text-xs flex items-center justify-center text-center p-4">
                     {mapStatus === 'error'
-                      ? 'Map SDK is unavailable. Configure API key and use the external map button.'
+                      ? 'Map SDK is unavailable. Configure API key and try again.'
                       : 'Loading map...'}
                   </div>
                 )}
-
-                <a
-                  href={selectedMapUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="absolute bottom-3 right-3 bg-white/95 px-3 py-1 text-xs font-bold border border-gray-300 rounded-sm hover:text-[#FFD700]"
-                >
-                  Open in {mapProvider === 'naver' ? 'Naver' : 'Kakao'}
-                </a>
               </div>
             </div>
           </div>
