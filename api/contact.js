@@ -1,53 +1,54 @@
-import type { VercelRequest, VercelResponse } from '@vercel/node';
-import nodemailer from 'nodemailer';
+// api/contact.js
 
-interface ContactRequestBody {
-  name: string;
-  company?: string;
-  email: string;
-  senderEmail?: string;
-  phone?: string;
-  subject: string;
-  message: string;
-}
+const nodemailer = require('nodemailer');
 
-function isValidBody(payload: unknown): payload is ContactRequestBody {
+function isValidBody(payload) {
   if (!payload || typeof payload !== 'object') return false;
-  const data = payload as Record<string, unknown>;
+
   return (
-    typeof data.name === 'string' &&
-    data.name.trim().length > 0 &&
-    typeof data.email === 'string' &&
-    data.email.trim().length > 0 &&
-    typeof data.subject === 'string' &&
-    data.subject.trim().length > 0 &&
-    typeof data.message === 'string' &&
-    data.message.trim().length > 0
+    typeof payload.name === 'string' &&
+    payload.name.trim().length > 0 &&
+    typeof payload.email === 'string' &&
+    payload.email.trim().length > 0 &&
+    typeof payload.subject === 'string' &&
+    payload.subject.trim().length > 0 &&
+    typeof payload.message === 'string' &&
+    payload.message.trim().length > 0
   );
 }
 
-export default async function handler(req: VercelRequest, res: VercelResponse) {
+module.exports = async function handler(req, res) {
   if (req.method !== 'POST') {
-    return res.status(405).json({ message: 'Method Not Allowed' });
+    return res.status(405).json({
+      message: 'Method Not Allowed',
+    });
   }
 
   const gmailUser = process.env.MAIL_GMAIL_USER || '';
   const gmailAppPassword = process.env.MAIL_GMAIL_APP_PASSWORD || '';
   const receiverEmails = (process.env.MAIL_RECEIVER_EMAILS || '')
     .split(',')
-    .map((e) => e.trim())
+    .map((email) => email.trim())
     .filter(Boolean);
 
-  if (!gmailUser || !gmailAppPassword || gmailAppPassword === 'PASTE_GMAIL_APP_PASSWORD_HERE') {
+  if (
+    !gmailUser ||
+    !gmailAppPassword ||
+    gmailAppPassword === 'PASTE_GMAIL_APP_PASSWORD_HERE' ||
+    receiverEmails.length === 0
+  ) {
     return res.status(500).json({
       message:
-        'Mail server is not configured. Set MAIL_GMAIL_USER / MAIL_GMAIL_APP_PASSWORD / MAIL_RECEIVER_EMAILS in .env.',
+        'Mail server is not configured. Set MAIL_GMAIL_USER / MAIL_GMAIL_APP_PASSWORD / MAIL_RECEIVER_EMAILS in Vercel Environment Variables.',
     });
   }
 
   const payload = req.body;
+
   if (!isValidBody(payload)) {
-    return res.status(400).json({ message: 'Invalid request body.' });
+    return res.status(400).json({
+      message: 'Invalid request body.',
+    });
   }
 
   const sanitized = {
@@ -63,7 +64,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   try {
     const transporter = nodemailer.createTransport({
       service: 'gmail',
-      auth: { user: gmailUser, pass: gmailAppPassword },
+      auth: {
+        user: gmailUser,
+        pass: gmailAppPassword,
+      },
     });
 
     await transporter.sendMail({
@@ -82,9 +86,15 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       ].join('\n'),
     });
 
-    return res.status(200).json({ ok: true });
+    return res.status(200).json({
+      ok: true,
+    });
   } catch (error) {
     console.error('Contact API error:', error);
-    return res.status(500).json({ message: 'Failed to send email.' });
+
+    return res.status(500).json({
+      message: 'Failed to send email.',
+      error: error instanceof Error ? error.message : String(error),
+    });
   }
-}
+};
